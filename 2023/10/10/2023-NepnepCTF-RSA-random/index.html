@@ -350,12 +350,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-10 10:27:24'>2023-10-10 10:19</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-10 15:29:11'>2023-10-10 10:19</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:881</span>
+        <span>字数:868</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -505,14 +505,14 @@ Cipher = PKCS1_v1_5.new(privateKey)
 c = Cipher.encrypt(flag.encode())
 # print(c)
 
-# 连分数解pqd
+#连分数解pqd
 def attack(N, e):
     convergents = continued_fraction(e/(N^2-9/4*N+1)).convergents()
     for c in convergents:
         k = c.numerator()
         d = c.denominator()
         if pow(pow(2, e, N), d, N) == 2:
-            phi = (e * d - 1) // k  #(p^2-1)*(q^2-1) = n^2+1-p^2-q^2
+            phi = (e * d - 1) // k
             p_a_q = sqrt(N^2 + 1 - phi + 2*N)
             p_s_q = sqrt(N^2 + 1 - phi - 2*N)
             p = (p_a_q - p_s_q)//2
@@ -526,7 +526,7 @@ predictor = MT19937Predictor()
 for i in range(7):
     # print(i)
     p, q, d = attack(int(NN[i]), int(ee[i]))
-    # 根据signal调整pq顺序
+    #根据signal调整pq顺序
     if signal[i] == 0:
         if p &gt; q:
             p, q = q, p
@@ -558,10 +558,10 @@ print(flag)
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>2023 NepnepCTF RSA_random</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">881</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">868</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 10:19:40</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-10, 10:27:24</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-10, 15:29:11</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-NepnepCTF-RSA-random/" title="2023 NepnepCTF RSA_random">http://example.com/2023/10/10/2023-NepnepCTF-RSA-random/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
