@@ -344,7 +344,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-10 14:16:36'>2023-10-10 11:51</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-10 14:21:14'>2023-10-10 11:51</time>
         
     </div>
     <div class="article-meta">
@@ -454,7 +454,7 @@ if inpsecret == secret:
 <p>下面为了易于区分变量，以A、B、b、x命名，其中b是B的低位，已知A和b。<br>$$<br>B_i \equiv A_ix \mod p \<br>2^{16}k_i+b_i \equiv A_ix \mod p \<br>2^{16}k_i \equiv A_ix-b_i \mod p \<br>k_i \equiv 2^{-16}A_ix-2^{-16}b_i \mod p \<br>令 \begin{cases}<br>AA_i&#x3D;2^{-16}A_i \<br>BB_i&#x3D;-2^{-16}b_i \<br>\end{cases} \<br>k_i \equiv AA_i \times x+BB_i \mod p \<br>$$</p>
 <p><img src="/../img/2023-WMCTF-signin/image-20231010115405351.png" alt="image-20231010115405351"></p>
 <p>最终计算用的是LLL结果的第二行，原因如下</p>
-<p><img src="/img/2023-WMCTF-signin/image-20231010115633578.png" alt="image-20231010115633578"></p>
+<p><img src="/../img/2023-WMCTF-signin/image-20231010115633578.png" alt="image-20231010115633578"></p>
 <p>题目给出t&#x3D;38组，并且每组给出的位数是低16bit，本地测试了一下，这样的数据量能计算出来的成功率不是很高，所以需要多试几次。</p>
 <h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><h3 id="RSA-1"><a href="#RSA-1" class="headerlink" title="RSA"></a>RSA</h3><pre><code class="python">from Crypto.Util.number import *
 
@@ -550,7 +550,7 @@ assert x == x_
     <p><span class="copy-title">字数:</span><span class="post-count">1.1k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 11:51:33</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-10, 14:16:36</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-10, 14:21:14</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-WMCTF-signin/" title="2023 WMCTF signin">http://example.com/2023/10/10/2023-WMCTF-signin/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
