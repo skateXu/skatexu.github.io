@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>404 Not Found | skateXu</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="404 Not Found | skateXu">
+  <title>2023 WMCTF signin | skateXu</title>
+  <meta name="keywords" content=" RSA , HNP ">
+  <meta name="description" content="2023 WMCTF signin | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="很抱歉，您所访问的地址并不存在">
 <meta property="og:type" content="website">
@@ -313,24 +313,43 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <article id="post-2023-WMCTF-signin" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">404 Not Found</h1>
+        <h1 class="article-title">2023 WMCTF signin</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="题目">题目</a> > 
+            
+            <a  data-rel="题目&lt;---&gt;2023">2023</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">RSA</a>
+            
+            <a class="color4">HNP</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-10 11:05:51'>2023-10-10 11:03</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-10 11:56:58'>2023-10-10 11:51</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:14</span>
+        <span>字数:1.1k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -349,7 +368,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RSA"><span class="toc-text">RSA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HNP"><span class="toc-text">HNP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%A4%8D%E7%8E%B0"><span class="toc-text">本地复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RSA-1"><span class="toc-text">RSA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HNP-1"><span class="toc-text">HNP</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -365,7 +384,159 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>很抱歉，您所访问的地址并不存在</strong></p>
+        <h2 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h2><pre><code class="python">from Crypto.Util.number import *
+from random import randrange
+from secret import flag
+
+def pr(msg):
+    print(msg)
+
+pr(br&quot;&quot;&quot;
+                        ....&#39;&#39;&#39;&#39;&#39;&#39;....                        
+                     .`&quot;,:;;II;II;;;;:,&quot;^&#39;.                    
+                  &#39;&quot;IlllI;;;;;;;;;;;;;Il!!l;^.                 
+                `l&gt;&lt;&gt;!!!!!!!!iiiii!!!!!!!!i&gt;&lt;!&quot;.               
+             &#39;:&gt;?]__++~~~~~&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;~~+__i&quot;.            
+           .:i+&#125;&#123;]?-__+++~~~~~~&lt;&lt;&lt;&lt;&lt;~~~~~~+_-?[\1_!^           
+          .;&lt;_&#125;\&#123;]-_++~&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;~+-?]\|]+&lt;^          
+          .!-&#123;t|[?-&#125;(|(()&#123;_&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;_&#125;1)))1&#125;??]&#123;t|]_&quot;          
+           !)nf&#125;]-?/\)&#123;]]]_&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;_]]&#125;&#125;&#123;\/?-][)vf?`          
+          &#39;!tX/&#125;]--&lt;]&#123;\Un[~~&lt;&lt;&lt;&lt;&lt;~~&lt;~-11Yz)&lt;--?[&#123;vv[&quot;.         
+         .&lt;&#123;xJt&#125;]?!ibm0%&amp;Ci&gt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;!0kJW%w+:-?[&#123;uu)&#125;,         
+          !1fLf&#125;]_::xmqQj[&quot;I~&lt;&lt;&lt;&lt;&lt;&lt;&gt;&quot;(ZqOu&#123;I^&lt;?[&#123;cc)[`         
+          `&#125;|x\&#125;]_+&lt;!&lt;+~&lt;&lt;__~&lt;&lt;&lt;&lt;&lt;&lt;+_&lt;&lt;_+&lt;&gt;&lt;++-[1j/(&gt;          
+           !\j/&#123;]-++___--_+~~&lt;i;I&gt;~~~__-______?&#125;(jf&#125;`          
+            ;~(|&#125;?_++++~~++~+]-++]?+++~~~~+++-[1/]&gt;^           
+              ;\([?__+_-?]?-_-----__-]?-_+++-]&#123;/].             
+               l||&#125;?__/rjffcCQQQQQLUxffjf&#125;+-]1\?&#39;              
+                ,[\)[?&#125;&#125;-__[/nzXXvj)?__]&#123;??&#125;((&gt;.               
+                 .I[|(1&#123;]_+~~~&lt;~~&lt;&lt;&lt;~+_[&#125;1(1+^                 
+                    ,~&#123;|\)&#125;]_++++++-?&#125;1)1?!`                   
+                      .&quot;!_]&#123;11))1&#123;&#125;]-+i:&#39;                      
+                          .`^&quot;,&quot;^`&#39;.                           
+&quot;&quot;&quot;.decode())
+
+def gen_prime(bit):
+    while 1:
+        P = getPrime(bit)
+        if len(bin(P)) - 2 == bit:
+            return P
+
+pq_bit = 512
+offset = 16
+
+P,Q = [gen_prime(pq_bit) for i in range(2)]
+N = P * Q
+gift = int(bin(P ^ (Q &gt;&gt; offset))[2+offset:],2)
+pr(N)
+pr(gift)
+
+inpP = int(input())
+if inpP != P:
+    pr(b&quot;you lose!&quot;)
+    exit()
+
+secret = randrange(0,P)
+bs = [randrange(0,P) for _ in range(38)]
+
+results = [(bi * secret) % P for bi in bs]
+rs = [ri &amp; (2 ** offset - 1)  for ri in results]
+
+pr(bs)
+pr(rs)
+inpsecret = int(input())
+if inpsecret == secret:
+    pr(flag)
+</code></pre>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>给出了<code>p^(q&gt;&gt;16)</code>的低<code>512-16</code>位，还原P。已知<code>p^(q&gt;&gt;16)</code>以前见过，直接套脚本；另外，这一题删掉了高16位，所以要加个爆破。</p>
+<h3 id="HNP"><a href="#HNP" class="headerlink" title="HNP"></a>HNP</h3><p><a target="_blank" rel="noopener" href="https://blog.soreatu.com/posts/intended-solution-to-nhp-in-gxzyctf-2020/">参考</a></p>
+<p>HNP问题，给出bs和results的低16位rs。</p>
+<p>下面为了易于区分变量，以A、B、b、x命名，其中b是B的低位，已知A和b。<br>$$<br>B_i \equiv A_ix \mod p \<br>2^{16}k_i+b_i \equiv A_ix \mod p \<br>2^{16}k_i \equiv A_ix-b_i \mod p \<br>k_i \equiv 2^{-16}A_ix-2^{-16}b_i \mod p \<br>令 \begin{cases}<br>AA_i&#x3D;2^{-16}A_i \<br>BB_i&#x3D;-2^{-16}b_i \<br>\end{cases} \<br>k_i \equiv AA_i \times x+BB_i \mod p \<br>$$</p>
+<p><img src="D:/ImportantData/hacker/blog/source/_posts/2023-WMCTF-signin/image-20231010115405351.png" alt="image-20231010115405351"></p>
+<p>最终计算用的是LLL结果的第二行，原因如下</p>
+<p><img src="D:/ImportantData/hacker/blog/source/_posts/2023-WMCTF-signin/image-20231010115633578.png" alt="image-20231010115633578"></p>
+<p>题目给出t&#x3D;38组，并且每组给出的位数是低16bit，本地测试了一下，这样的数据量能计算出来的成功率不是很高，所以需要多试几次。</p>
+<h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><h3 id="RSA-1"><a href="#RSA-1" class="headerlink" title="RSA"></a>RSA</h3><pre><code class="python">from Crypto.Util.number import *
+
+def pq_xor(x, tp, tq):
+    if len(x) == 0:
+        return
+    if ((tp+(1&lt;&lt;len(x))) * (tq+(1&lt;&lt;len(x)+16)) &lt; N) or (tp * tq &gt; N):
+        return
+    if N % (tp+1) == 0:
+        pq.append(tp+1)
+        return
+    
+    if x[0] == &#39;0&#39;:
+        pq_xor(x[1:], tp, tq)  # p[]=0, q[]=0
+        pq_xor(x[1:], tp+(1&lt;&lt;len(x)-1), tq+(1&lt;&lt;len(x)-1+16))  # p[]=1, q[]=1
+    else:
+        pq_xor(x[1:], tp+(1&lt;&lt;len(x)-1), tq)  # p[]=1, q[]=0
+        pq_xor(x[1:], tp, tq+(1&lt;&lt;len(x)-1+16))  # p[]=0, q[]=1
+
+
+P = getPrime(512)
+Q = getPrime(512)
+N = P * Q
+gift = int(bin(P ^ (Q &gt;&gt; 16))[2:][16:], 2)
+print(f&quot;N = &#123;N&#125;&quot;)
+print(f&quot;gift = &#123;gift&#125;&quot;)
+
+
+for i in range(2**15, 2**16):  #爆破gift的高16bit
+    gift_ = int(bin(i)[2:].zfill(16) + bin(gift)[2:].zfill(512-16), 2)
+
+    pq = []
+    x = bin(gift_)[2:].zfill(512)
+
+    if x[16] == &#39;0&#39;:
+        tp = (gift_ &gt;&gt; 512-16 &lt;&lt; 512-16) + (1 &lt;&lt; 512-16-1)  # p[16]=1
+    else:
+        tp = (gift_ &gt;&gt; 512-16 &lt;&lt; 512-16)  # p[16]=0
+
+    tq = 1 &lt;&lt; 512-1  # q[0]=1
+
+    pq_xor(x[1+16:], tp, tq)
+    if pq != []:
+        if pq[0] == P or pq[0] == Q:
+            print(pq)
+            break
+</code></pre>
+<h3 id="HNP-1"><a href="#HNP-1" class="headerlink" title="HNP"></a>HNP</h3><pre><code class="python">from random import randrange
+
+Pbits = 512
+kbits = 16
+t = 38
+
+P = random_prime(2^Pbits)
+x = randrange(0, P)
+A = [randrange(0, P) for _ in range(t)]
+B = [(bi * x) % P for bi in A]
+b = [ri &amp; (2 ** kbits - 1) for ri in B]
+
+print(f&#39;P = &#123;P&#125;&#39;)
+print(f&#39;A = &#123;A&#125;&#39;)
+print(f&#39;b = &#123;b&#125;&#39;)
+
+AA = [inverse_mod(2^kbits,P) * Ai for Ai in A]
+BB = [inverse_mod(2^kbits,P) * (-bi) for bi in b]
+
+M = Matrix(QQ, t+2, t+2)
+for i in range(t):
+    M[i, i] = P
+    M[t, i] = AA[i]
+    M[t+1, i] = BB[i]
+M[t, t] = 2^(Pbits-kbits)/P
+M[t+1, t+1] = 2^(Pbits-kbits)
+
+res = M.LLL()
+B_high = [abs(int(i)) for i in res[1]]
+B_ = [(B_high[i]&lt;&lt;kbits) + int(b[i]) for i in range(t)]
+assert B == B_
+
+x_ = (B_[0] * inverse_mod(A[0],P)) % P
+assert x == x_
+</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -373,6 +544,18 @@
 </article>
 
 
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>2023 WMCTF signin</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">1.1k</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
+    <p><span class="copy-title">发布时间:</span>2023-10-10, 11:51:33</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-10, 11:56:58</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-WMCTF-signin/" title="2023 WMCTF signin">http://example.com/2023/10/10/2023-WMCTF-signin/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
+    </p>
+</div>
 
 
 
