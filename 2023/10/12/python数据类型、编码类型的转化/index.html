@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>2023 NepnepCTF RSA_random | skateXu</title>
-  <meta name="keywords" content=" RSA , 随机数预测 , 连分数 ">
-  <meta name="description" content="2023 NepnepCTF RSA_random | skateXu">
+  <title>python数据类型、编码类型的转化 | skateXu</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="python数据类型、编码类型的转化 | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="很抱歉，您所访问的地址并不存在">
 <meta property="og:type" content="website">
@@ -350,9 +350,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-2023-NepnepCTF-RSA-random" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-python数据类型、编码类型的转化" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">2023 NepnepCTF RSA_random</h1>
+        <h1 class="article-title">python数据类型、编码类型的转化</h1>
     
     <div class="article-meta">
         
@@ -362,33 +362,20 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="题目">题目</a> > 
-            
-            <a  data-rel="题目&lt;---&gt;2023">2023</a>
+            <a  data-rel="misc">misc</a>
             
         </span>
         
         
-        <span class="tag">
-            <i class="iconfont icon-tag"></i>
-            
-            <a class="color4">RSA</a>
-            
-            <a class="color1">随机数预测</a>
-            
-            <a class="color4">连分数</a>
-            
-        </span>
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-10-12 22:41:18'>2023-10-12 20:45</time>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-12 22:36:16'>2023-10-10 10:19</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        <span>字数:868</span>
+        <span>字数:412</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -407,7 +394,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MT19937-PRNG%E9%A2%84%E6%B5%8B"><span class="toc-text">MT19937 PRNG预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="toc-text">连分数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%A4%8D%E7%8E%B0"><span class="toc-text">本地复现</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#str%E5%92%8Cbytes"><span class="toc-text">str和bytes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#int%E5%92%8Cbytes"><span class="toc-text">int和bytes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E5%88%B6%E5%92%8Cascii"><span class="toc-text">进制和ascii</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -423,163 +410,100 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h2><pre><code class="Python">from gmpy2 import next_prime, invert as inverse_mod
-from Crypto.Cipher import PKCS1_v1_5
-from Crypto.PublicKey import RSA
-from random import getrandbits
-from math import lcm
-from sys import exit
+        <h2 id="str和bytes"><a href="#str和bytes" class="headerlink" title="str和bytes"></a>str和bytes</h2><pre><code class="python">&gt;&gt;&gt; str_ = &quot;PK\x03\x04&quot;
+&gt;&gt;&gt; str_.encode()
+b&#39;PK\x03\x04&#39;
 
-global_bits = 1024
-
-BANNER = rb&quot;&quot;&quot;
-.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.
-| N.--.  | E.--.  | P.--.  | C.--.  | T.--.  | F.--.  | H.--.  | A.--.  | P.--.  | P.--.  | Y.--.  |
-|  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  (\/)  |
-|  :\/:  |  :\/:  |  ()()  |  (__)  |  :\/:  |  (__)  |  :\/:  |  ()()  |  :\/:  |  :\/:  |  :\/:  |
-|  &#39;--&#39;n |  &#39;--&#39;e |  &#39;--&#39;p |  &#39;--&#39;c | &#39;--&#39;t  |  &#39;--&#39;f |  &#39;--&#39;h |  &#39;--&#39;a |  &#39;--&#39;p |  &#39;--&#39;p |  &#39;--&#39;y |
-`--------`--------`--------`--------&#39;--------`--------`--------`--------`--------`--------`--------`
-&quot;&quot;&quot;
-
-
-def generate_prime(bits: int):
-    p = (getrandbits(bits - 32) &lt;&lt; 32)
-    return next_prime(p)
-
-
-def generate_private_key(bits: int):
-    p, q = generate_prime(bits), generate_prime(bits)
-    n, phi = p * q, lcm(p-1, q-1)
-
-    d = inverse_mod(0x10001, phi)
-    privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
-    return privateKey, p &gt; q
-
-
-if __name__ == &quot;__main__&quot;:
-    print(BANNER.decode())
-    print(&quot;Welcome to the world of random RSA.&quot;)
-    print(&quot;Please make your choice.&quot;)
-    for _ in range(8):
-        choice = input()
-
-        if choice == &#39;1&#39;:
-            p, q = generate_prime(global_bits), generate_prime(global_bits)
-            N = p*q
-            d = generate_prime(global_bits-32)
-            e = inverse_mod(d, (p * p - 1) * (q * q - 1))
-            print(f&quot;&#123;int(N)&#125;&quot;)
-            print(f&quot;&#123;int(e)&#125;&quot;)
-
-        elif choice == &#39;2&#39;:
-            privateKey, signal = generate_private_key(global_bits)
-            Cipher = PKCS1_v1_5.new(privateKey)
-            c = (Cipher.encrypt(flag.encode()))
-            print(c)
-            exit()
-
-        else:
-            exit()
+&gt;&gt;&gt; bytes_ = b&#39;PK\x03\x04&#39;
+&gt;&gt;&gt; bytes_.decode()
+&#39;PK\x03\x04&#39;
 </code></pre>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="MT19937-PRNG预测"><a href="#MT19937-PRNG预测" class="headerlink" title="MT19937 PRNG预测"></a>MT19937 PRNG预测</h3><p>观察choice，发现choice&#x3D;1和choice&#x3D;2好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937 PRNG预测</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">参考</a></p>
-<pre><code class="Python">import random
-from mt19937predictor import MT19937Predictor
+<pre><code class="python">&gt;&gt;&gt; str_ = &quot;504B0304&quot;
+&gt;&gt;&gt; bytes.fromhex(str_)
+b&#39;PK\x03\x04&#39;
 
-predictor = MT19937Predictor()
-for _ in range(624):
-    x = random.getrandbits(32)
-    predictor.setrandbits(x, 32)
-
-assert random.getrandbits(32) == predictor.getrandbits(32)
+&gt;&gt;&gt; bytes_ = b&#39;PK\x03\x04&#39;
+&gt;&gt;&gt; bytes_.hex()
+&quot;504b0304&quot;
 </code></pre>
-<p>题目一共有8次交互机会，当choice&#x3D;1，pq都是<code>getrandbits(1024-32)</code>，d是<code>getrandbits(1024-32-32)</code>，所以前7轮可以获得<code>(992*2+960)*7=20608</code>bits，满足MT19937所需要的<code>624*32=19968</code>bits</p>
-<p>然后根据每一轮的N、e用连分数恢复p、q、d，就可以预测了</p>
-<h3 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h3><p>比赛的时候没找到题目对应的论文，只找到了<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
-<p><strong>注意</strong>：题目没有输出每一轮p和q的顺序，所以需要爆破互换pq的，复现为了方便验证，手动加上一个signal值</p>
-<h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><pre><code class="Python">from Crypto.Cipher import PKCS1_v1_5
-from Crypto.PublicKey import RSA
-from random import getrandbits
-from sys import exit
-from mt19937predictor import MT19937Predictor
+<p>举例：以hex形式，读取文件和写入文件</p>
+<pre><code class="python">with open(&#39;1.txt&#39;, &#39;rb&#39;) as f:
+    str_ = f.read().hex()
 
-flag = &quot;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&quot;
-global_bits = 1024
+# str_ = &quot;504B0304&quot;
+str_1 = &quot;&quot;
+for i in range(0, len(str_), 2):
+    str_1 += str_[i:i+2]
 
-def generate_prime(bits: int):
-    p = (getrandbits(bits - 32) &lt;&lt; 32)
-    return next_prime(p)
+with open(&#39;2.txt&#39;, &#39;wb&#39;) as f:
+    f.write(bytes.fromhex(str_1))
+</code></pre>
+<h2 id="int和bytes"><a href="#int和bytes" class="headerlink" title="int和bytes"></a>int和bytes</h2><pre><code class="python">&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
+&gt;&gt;&gt; int.from_bytes(bytes_, &#39;big&#39;)
+112615676672893
 
-def generate_private_key(bits: int):
-    p, q = generate_prime(bits), generate_prime(bits)
-    n, phi = p * q, lcm(p-1, q-1)
-    d = inverse_mod(0x10001, phi)
-    privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
-    return privateKey
+&gt;&gt;&gt; int_ = 112615676672893
+&gt;&gt;&gt; int_.to_bytes(10, &#39;big&#39;)
+b&#39;\x00\x00\x00\x00flag&#123;&#125;&#39;
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; from Crypto.Util.number import *
+ 
+&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
+&gt;&gt;&gt; bytes_to_long(bytes_)
+112615676672893
 
-NN = []
-ee = []
-signal = []
+&gt;&gt;&gt; int_ = 112615676672893
+&gt;&gt;&gt; long_to_bytes(int_)
+b&#39;flag&#123;&#125;&#39;
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
+&gt;&gt;&gt; list(bytes_)
+[102, 108, 97, 103, 123, 125]
 
-for _ in range(7):
-    p, q = generate_prime(global_bits), generate_prime(global_bits)
-    if p &gt; q:
-        signal.append(1)
-    else:
-        signal.append(0)
-    N = p*q
-    d = generate_prime(global_bits-32)
-    e = inverse_mod(d, (p * p - 1) * (q * q - 1))
-    NN.append(N)
-    ee.append(e)
+&gt;&gt;&gt; list_ = [102, 108, 97, 103, 123, 125]
+&gt;&gt;&gt; bytes(list_)
+b&#39;flag&#123;&#125;&#39;
+</code></pre>
+<h2 id="进制和ascii"><a href="#进制和ascii" class="headerlink" title="进制和ascii"></a>进制和ascii</h2><pre><code class="python">&gt;&gt;&gt; 0b1100001
+97
+&gt;&gt;&gt; 0o12
+97
+&gt;&gt;&gt; 0xa
+97
 
-privateKey = generate_private_key(global_bits)
-Cipher = PKCS1_v1_5.new(privateKey)
-c = Cipher.encrypt(flag.encode())
-# print(c)
+&gt;&gt;&gt; int(&quot;0b1100001&quot;, 2)
+97
+&gt;&gt;&gt; int(&quot;0o141&quot;, 8)
+97
+&gt;&gt;&gt; int(&quot;0x61&quot;, 16)
+97
 
-#连分数解pqd
-def attack(N, e):
-    convergents = continued_fraction(e/(N^2-9/4*N+1)).convergents()
-    for c in convergents:
-        k = c.numerator()
-        d = c.denominator()
-        if pow(pow(2, e, N), d, N) == 2:
-            phi = (e * d - 1) // k
-            p_a_q = sqrt(N^2 + 1 - phi + 2*N)
-            p_s_q = sqrt(N^2 + 1 - phi - 2*N)
-            p = (p_a_q - p_s_q)//2
-            assert N % p == 0
-            q = N//p
-            d = inverse_mod(e, (p * p - 1) * (q * q - 1))
-            return int(p), int(q), int(d)
+&gt;&gt;&gt; int(&quot;1100001&quot;, 2)
+97
+&gt;&gt;&gt; int(&quot;141&quot;, 8)
+97
+&gt;&gt;&gt; int(&quot;61&quot;, 16)
+97
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; bin(97)
+&#39;0b1100001&#39;
+&gt;&gt;&gt; oct(97)
+&#39;0o141&#39;
+&gt;&gt;&gt; hex(97)
+&#39;0x61&#39;
 
-predictor = MT19937Predictor()
+&gt;&gt;&gt; bin(97)[2:]
+&#39;1100001&#39;
+&gt;&gt;&gt; oct(97)[2:]
+&#39;141&#39;
+&gt;&gt;&gt; hex(97)[2:]
+&#39;61&#39;
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; ord(&quot;a&quot;)
+97
 
-for i in range(7):
-    # print(i)
-    p, q, d = attack(int(NN[i]), int(ee[i]))
-    #根据signal调整pq顺序
-    if signal[i] == 0:
-        if p &gt; q:
-            p, q = q, p
-    else:
-        if p &lt; q:
-            p, q = q, p
-    
-    predictor.setrandbits(p&gt;&gt;32, 992)
-    predictor.setrandbits(q&gt;&gt;32, 992)
-    predictor.setrandbits(d&gt;&gt;32, 960)
-
-p = next_prime(predictor.getrandbits(992) &lt;&lt; 32)
-q = next_prime(predictor.getrandbits(992) &lt;&lt; 32)
-n, phi = p * q, lcm(p-1, q-1)
-d = inverse_mod(0x10001, phi)
-privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
-Cipher = PKCS1_v1_5.new(privateKey)
-flag = Cipher.decrypt(c,&#39;\x00&#39;)
-print(flag)
-# b&#39;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&#39;
+&gt;&gt;&gt; chr(97)
+&#39;a&#39;
 </code></pre>
 
       
@@ -590,12 +514,12 @@ print(flag)
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>2023 NepnepCTF RSA_random</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">868</span></p>
+    <p><span class="copy-title">文章标题:</span>python数据类型、编码类型的转化</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">412</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
-    <p><span class="copy-title">发布时间:</span>2023-10-10, 10:19:40</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-12, 22:36:16</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-NepnepCTF-RSA-random/" title="2023 NepnepCTF RSA_random">http://example.com/2023/10/10/2023-NepnepCTF-RSA-random/</a>
+    <p><span class="copy-title">发布时间:</span>2023-10-12, 20:45:12</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-12, 22:41:18</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/12/python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E7%BC%96%E7%A0%81%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E5%8C%96/" title="python数据类型、编码类型的转化">http://example.com/2023/10/12/python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E7%BC%96%E7%A0%81%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BD%AC%E5%8C%96/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
     </p>
