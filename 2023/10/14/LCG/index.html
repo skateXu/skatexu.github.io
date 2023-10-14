@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>skateXu</title>
+  <title>LCG | skateXu</title>
   <meta name="keywords" content="">
-  <meta name="description" content="skateXu">
+  <meta name="description" content="LCG | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="很抱歉，您所访问的地址并不存在">
 <meta property="og:type" content="website">
@@ -60,7 +60,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -372,12 +372,53 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-LCG" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-My-blog"><span class="toc-text">关于 My blog</span></a></li></ol>
+        <h1 class="article-title">LCG</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="笔记">笔记</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-10-14 10:41:46'>2023-10-14 10:18</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:933</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-1"><span class="toc-text">LCG-1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-2"><span class="toc-text">LCG-2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-3"><span class="toc-text">LCG-3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-4"><span class="toc-text">LCG-4</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -390,13 +431,303 @@
     }
 </style>
 </div>
-            <h2 id="关于-My-blog"><a href="#关于-My-blog" class="headerlink" title="关于 My blog"></a>关于 My blog</h2><p>整理一些零碎的笔记</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>线性同余法（LCG）是一种产生<strong>伪随机数</strong>的方法。</p>
+<p>$$ x_{n+1} &#x3D; (ax_n + b) \% p $$</p>
+<p>主要的求解公式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">求解</th>
+<th align="center">公式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$$ x_n $$</td>
+<td align="center">$$ x_n &#x3D; a^{-1} (x_{n+1} - b) \% p $$</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td align="center">$$ a &#x3D; (x_{n+2} - x_{n+1}) * (x_{n+1} - x_n)^{-1} \% p $$</td>
+</tr>
+<tr>
+<td align="center">b</td>
+<td align="center">$$ b &#x3D; (x_{n+1} - ax_n) \% p $$</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">$$ t_n &#x3D; x_{n+1} - x_n，p &#x3D; \gcd (t_{n+1}t_{n-1} - t_n^2, t_nt_{n-2} - t_{n-1}^2) $$</td>
+</tr>
+</tbody></table>
+<p>根据 lcg 算法主要有 <strong>4</strong> 种 ctf 题型：</p>
+<h2 id="LCG-1"><a href="#LCG-1" class="headerlink" title="LCG-1"></a>LCG-1</h2><p>已知<strong>a</strong>，<strong>b</strong>，<strong>p</strong>，最后的 <strong>seed</strong></p>
+<pre><code class="python">from Crypto.Util.number import *
 
-        </article>
-        
-        
+flag = b&#39;flag&#123;******&#125;&#39;
+seed = bytes_to_long(flag)
+length = seed.bit_length()
+
+a = 155971836487521127413178805566278019291810483723477332740305259
+b = 202084599085918621034388670259032014348708452871335919618754423
+p = 199296574393235855574369935471815490856316662404539770651985589
+
+for i in range(10):
+    seed = (a * seed + b) % p
+
+print(&quot;seed =&quot;, seed)
+# seed = 68551282599199125993658805253274162071651594471901897411266172
+</code></pre>
+<p>解题脚本</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+a = 155971836487521127413178805566278019291810483723477332740305259
+b = 202084599085918621034388670259032014348708452871335919618754423
+p = 199296574393235855574369935471815490856316662404539770651985589
+
+MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
+ani = MMI(a, p)
+seed = 68551282599199125993658805253274162071651594471901897411266172
+
+for i in range(10):
+    seed = (ani * (seed - b)) % p
+
+print(long_to_bytes(seed))
+# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+</code></pre>
+<h2 id="LCG-2"><a href="#LCG-2" class="headerlink" title="LCG-2"></a>LCG-2</h2><p>已知 <strong>a</strong>，<strong>p</strong>，<strong>output[]</strong> 的至少连续 <strong>2</strong> 个元素</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+flag = b&#39;flag&#123;******&#125;&#39;
+seed = bytes_to_long(flag)
+length = seed.bit_length()
+
+a = 164031293329341681517343090279314923560076759098650542522957107
+b = getPrime(length)
+p = 205493536419436317448904933834796929859527270820306334380668191
+
+output = []
+for i in range(10):
+    seed = (a * seed + b) % p
+    output.append(seed)
+
+print(&quot;output6 =&quot;, output[6])
+print(&quot;output7 =&quot;, output[7])
+# output6 = 45745972511051576017008610408791747592523694924890977868463767
+# output7 = 47022551472047051529936224993657475046232093691394911203042968
+</code></pre>
+<p>解题脚本</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+a = 164031293329341681517343090279314923560076759098650542522957107
+# b = getPrime(length)
+p = 205493536419436317448904933834796929859527270820306334380668191
+
+output6 = 45745972511051576017008610408791747592523694924890977868463767
+output7 = 47022551472047051529936224993657475046232093691394911203042968
+gift = [output6, output7]
+
+#求b
+b = (gift[1] - a * gift[0]) % p
+
+MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
+ani = MMI(a, p)
+seed = gift[0]
+
+for i in range(7):
+    seed = (ani * (seed - b)) % p
+
+print(long_to_bytes(seed))
+# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+</code></pre>
+<h2 id="LCG-3"><a href="#LCG-3" class="headerlink" title="LCG-3"></a><strong>LCG-3</strong></h2><p>已知 <strong>p</strong>，<strong>output[]</strong> 的至少连续 <strong>3</strong> 个元素</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+flag = b&#39;flag&#123;******&#125;&#39;
+seed = bytes_to_long(flag)
+length = seed.bit_length()
+
+a = getPrime(length)
+b = getPrime(length)
+p = 198631956575512484302101120778529528702856823120687410371716261
+
+output = []
+for i in range(10):
+    seed = (a * seed + b) % p
+    output.append(seed)
+
+print(&quot;output6 =&quot;, output[6])
+print(&quot;output7 =&quot;, output[7])
+print(&quot;output8 =&quot;, output[8])
+# output6 = 158657126406132303164720900786306081992669207557561976396601882
+# output7 = 173086776808844203987690862148966917477329732513213152207487530
+# output8 = 177076590008214173673645268154603521522421695802860665456135973
+</code></pre>
+<p>解题脚本</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+# a = getPrime(length)
+# b = getPrime(length)
+p = 198631956575512484302101120778529528702856823120687410371716261
+
+output6 = 158657126406132303164720900786306081992669207557561976396601882
+output7 = 173086776808844203987690862148966917477329732513213152207487530
+output8 = 177076590008214173673645268154603521522421695802860665456135973
+gift = [output6, output7, output8]
+
+#求a
+MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
+a = (gift[2] - gift[1]) * MMI((gift[1] - gift[0]), p) % p
+
+#求b
+b = (gift[1] - a * gift[0]) % p
+
+ani = MMI(a, p)
+seed = gift[0]
+
+for i in range(7):
+    seed = (ani * (seed - b)) % p
+
+print(long_to_bytes(seed))
+# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+</code></pre>
+<h2 id="LCG-4"><a href="#LCG-4" class="headerlink" title="LCG-4"></a>LCG-4</h2><p>已知 <strong>output[]</strong> 的至少连续 <strong>5</strong> 个元素（尽量多）</p>
+<pre><code class="python">from Crypto.Util.number import *
+
+flag = b&#39;flag&#123;******&#125;&#39;
+seed = bytes_to_long(flag)
+length = seed.bit_length()
+
+a = getPrime(length)
+b = getPrime(length)
+p = getPrime(length)
+
+output = []
+for i in range(10):
+    seed = (a * seed + b) % p
+    output.append(seed)
+
+print(&quot;output =&quot;, output)
+# output = [168629567557403367186885420444281063317304797350594299096453254, 37810059304430144255796769528019631599115017008645572272676848, 153467674569619182399277890239200868986878351528697622090498978, 130441867851875429652192551507870248584806009516471536255184738, 165072061865233441980188465107233439530695291179218871834569574, 169462757174386331962049136282171771458712297105156982582248590, 5733544729623964834423742564305810327645521588143518180790467, 29307267147593660845277077949962969239999900796071055310564887, 167961532214306463210330398007557832141937447147319867665370457, 18070228848659542858848007252120157475238819346210716562665302]
+</code></pre>
+<p>解题脚本</p>
+<pre><code class="python">from Crypto.Util.number import *
+import gmpy2
+ 
+# a = getPrime(length)
+# b = getPrime(length)
+# p = getPrime(length)
+
+output = [168629567557403367186885420444281063317304797350594299096453254, 37810059304430144255796769528019631599115017008645572272676848, 153467674569619182399277890239200868986878351528697622090498978, 130441867851875429652192551507870248584806009516471536255184738, 165072061865233441980188465107233439530695291179218871834569574, 169462757174386331962049136282171771458712297105156982582248590, 5733544729623964834423742564305810327645521588143518180790467, 29307267147593660845277077949962969239999900796071055310564887, 167961532214306463210330398007557832141937447147319867665370457, 18070228848659542858848007252120157475238819346210716562665302]
+
+gift = output
+
+t = []
+for i in range(len(gift) - 1):
+    t.append(gift[i] - gift[i-1])
+
+all_p = []
+for i in range(len(t) - 2):
+    all_p.append(gmpy2.gcd((t[i+1] * t[i-1] - t[i] * t[i]), (t[i+2] * t[i] - t[i+1] * t[i+1])))
+
+for p in all_p:
+    p = abs(p)
+    if p == 1:
+        continue
+
+    #求a
+    MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
+    a = (gift[2] - gift[1]) * MMI((gift[1] - gift[0]), p) % p
+
+    #求b
+    b = (gift[1] - a * gift[0]) % p
+
+    ani = MMI(a, p)
+    seed = gift[0]
+
+    for i in range(1):
+        seed = (ani * (seed - b)) % p
+
+    print(long_to_bytes(seed))
+
+# b&#39;\x02&#39;
+# b&#39;\x02&#39;
+# b&#39;\x17b\xd3\x03\xcaV\x95\x9a\xc5\xe7C\xa6\x1f\xa3\x88\xd5L\x02\xf5\xa9I\xb2\xce\x17/\xc7\xa6&#39;
+# b&#39;\x1e\xb9I\xd93\xbd\x07\xcf\xbc\xbd\xe0\xf1\xf4\x18gB\xe8P\xfe;\x01B\xd2\xccy&gt;&#39;
+# b&#39;\rj5\xb4\x19\xd9\xef\xa4\xee\xb0x\x08y\xc6\x0f\x81\x91@\xaf\x16\xd5\xaf\xdb\x8c)\xca\x9e&#39;
+# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
+    </div>
+</article>
+
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>LCG</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">933</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
+    <p><span class="copy-title">发布时间:</span>2023-10-14, 10:18:47</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-14, 10:41:46</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/14/LCG/" title="LCG">http://example.com/2023/10/14/LCG/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="//cdn.jsdelivr.net/npm/mathjax@2.7.8/unpacked/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<input type="hidden" id="MathJax-js"
+        value="//cdn.jsdelivr.net/npm/mathjax@2.7.8/unpacked/MathJax.js?config=TeX-MML-AM_CHTML">
+</input>
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -405,11 +736,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>
