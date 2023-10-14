@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>404 Not Found | skateXu</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="404 Not Found | skateXu">
+  <title>BugKu 1和0的故事 | skateXu</title>
+  <meta name="keywords" content=" PIL ">
+  <meta name="description" content="BugKu 1和0的故事 | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="很抱歉，您所访问的地址并不存在">
 <meta property="og:type" content="website">
@@ -387,24 +387,39 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <article id="post-BugKu-1和0的故事" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">404 Not Found</h1>
+        <h1 class="article-title">BugKu 1和0的故事</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="misc">misc</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">PIL</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-10 11:05:51'>2023-10-10 11:03</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-14 11:10:29'>2023-10-14 10:48</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:14</span>
+        <span>字数:588</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -423,7 +438,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%88Excel%EF%BC%89"><span class="toc-text">方法一（Excel）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%88PIL%EF%BC%89"><span class="toc-text">方法二（PIL）</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -439,7 +454,135 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>很抱歉，您所访问的地址并不存在</strong></p>
+        <p>附件1.txt如下</p>
+<pre><code>0000000001110010000000000
+0000000000011110100000000
+0000000001110001000000000
+0000000010111100000000000
+0000000010101010000000000
+0000000001100010100000000
+0000000010101010100000000
+0000000001000001100000000
+1100011101110110100011000
+0001000010110010010010100
+0100111101000011101110011
+0011110100101011001001001
+1000001001100001001101000
+1111000111111011100101000
+1011011111001101111110111
+1000110110010010101101100
+1000111100111111111110111
+0000000010110001100010100
+0000000010010100101010001
+0000000010101010100011001
+0000000000100111111110010
+0000000000011001011110111
+0000000001001100100100001
+0000000011000011011011001
+0000000011010000101110101
+</code></pre>
+<p>附件内容是一个25*25的01矩阵。用1表示黑色方块，0表示白色方块，猜测这是一个缺少定位符的二维码。</p>
+<h2 id="方法一（Excel）"><a href="#方法一（Excel）" class="headerlink" title="方法一（Excel）"></a>方法一（Excel）</h2><pre><code class="python">import xlwt
+
+# 创建一个xls
+book = xlwt.Workbook()
+# 创建一个样式 (黑色填充，无边界)
+Style = xlwt.easyxf(&#39;pattern: pattern solid, fore_colour black; font: height 250&#39;)
+# 添加一个表单，允许覆盖
+table = book.add_sheet(&#39;flag_code&#39;, cell_overwrite_ok=True)
+
+with open(&#39;1.txt&#39;, &#39;r&#39;) as f:
+    s = &quot;&quot;.join(f.read().splitlines())
+
+MAX = 25  #二维码边长，若大于256需要用xlsxwriter模块
+
+i = 0
+for y in range(0, MAX):
+    for x in range(0, MAX):
+        table.col(x).width = 256*3  #256为衡量单位，3表示3个字符宽度
+        if(s[i] == &#39;1&#39;):  #如果是1则在Excel上涂黑
+            table.write(y, x, &#39;&#39;, style=Style)
+        i += 1
+
+book.save(&#39;1和0的故事.xls&#39;)
+</code></pre>
+<p>加入二维码定位符</p>
+<pre><code class="python"># 7*7的二维码定位符
+locator = [
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1]
+]
+
+def draw_locator(y, x):
+    for i in range(7):
+        for j in range(7):
+            pos1 = locator[i][j]
+            if pos1 == 1:  #如果是1则在Excel上涂黑
+                table.write(y+i, x+j, &#39;&#39;, style=Style)
+
+draw_locator(0, 0)  #左上角
+draw_locator(0, 18)  #右上角
+draw_locator(18, 0)  #左下角
+
+book.save(&#39;1和0的故事.xls&#39;)
+</code></pre>
+<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110419730.png" alt="image-20231014110419730"></p>
+<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110617274.png" alt="image-20231014110617274"></p>
+<h2 id="方法二（PIL）"><a href="#方法二（PIL）" class="headerlink" title="方法二（PIL）"></a>方法二（PIL）</h2><pre><code class="python">from PIL import Image
+
+with open(&#39;1.txt&#39;, &#39;r&#39;) as f:
+    s = &quot;&quot;.join(f.read().splitlines())
+
+MAX = 25  #二维码边长
+pic = Image.new(&quot;1&quot;, (MAX, MAX))
+
+i = 0
+for y in range(0, MAX):
+    for x in range(0, MAX):
+        if(s[i] == &#39;1&#39;):
+            pic.putpixel([x, y], 0)
+        else:
+            pic.putpixel([x, y], 1)
+        i += 1
+
+pic.show()
+pic.save(&quot;1和0的故事.png&quot;)
+</code></pre>
+<p>加入二维码定位符</p>
+<pre><code class="python"># 7*7的二维码定位符
+locator = [
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1]
+]
+
+def draw_locator(y, x):
+    for i in range(7):
+        for j in range(7):
+            pos1 = locator[i][j]
+            if(pos1 == 1):
+                pic.putpixel([x+i, y+j], 0)
+            else:
+                pic.putpixel([x+i, y+j], 1)
+
+draw_locator(0, 0)  #左上角
+draw_locator(0, 18)  #右上角
+draw_locator(18, 0)  #左下角
+
+pic.show()
+pic.save(&quot;1和0的故事.png&quot;)
+</code></pre>
+<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110859750.png" alt="image-20231014110859750"></p>
+<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110943899.png" alt="image-20231014110943899"></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -447,6 +590,18 @@
 </article>
 
 
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>BugKu 1和0的故事</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">588</span></p>
+    <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
+    <p><span class="copy-title">发布时间:</span>2023-10-14, 10:48:41</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-14, 11:10:29</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/14/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/" title="BugKu 1和0的故事">http://example.com/2023/10/14/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
+    </p>
+</div>
 
 
 
