@@ -407,7 +407,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-14 10:45:32'>2023-10-14 10:18</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-17 08:33:19'>2023-10-14 10:18</time>
         
     </div>
     <div class="article-meta">
@@ -648,20 +648,20 @@ for p in all_p:
     p = abs(p)
     if p == 1:
         continue
-
+    
     #求a
     MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
     a = (gift[2] - gift[1]) * MMI((gift[1] - gift[0]), p) % p
-
+    
     #求b
     b = (gift[1] - a * gift[0]) % p
-
+    
     ani = MMI(a, p)
     seed = gift[0]
-
+    
     for i in range(1):
         seed = (ani * (seed - b)) % p
-
+    
     print(long_to_bytes(seed))
 
 # b&#39;\x02&#39;
@@ -685,7 +685,7 @@ for p in all_p:
     <p><span class="copy-title">字数:</span><span class="post-count">928</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-14, 10:18:47</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-14, 10:45:32</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-17, 08:33:19</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/14/LCG/" title="LCG">http://example.com/2023/10/14/LCG/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
