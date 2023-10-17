@@ -420,12 +420,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-12 22:36:16'>2023-10-10 10:19</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-17 10:04:39'>2023-10-10 10:19</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:868</span>
+        <span>字数:866</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -518,8 +518,8 @@ if __name__ == &quot;__main__&quot;:
         else:
             exit()
 </code></pre>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="MT19937-PRNG预测"><a href="#MT19937-PRNG预测" class="headerlink" title="MT19937 PRNG预测"></a>MT19937 PRNG预测</h3><p>观察choice，发现choice&#x3D;1和choice&#x3D;2好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937 PRNG预测</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">参考</a></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="MT19937-PRNG预测"><a href="#MT19937-PRNG预测" class="headerlink" title="MT19937 PRNG预测"></a>MT19937 PRNG预测</h3><p>观察choice，发现<code>choice=1</code>和<code>choice=2</code>好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937 PRNG预测</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">mersenne-twister-predictor</a></p>
 <pre><code class="Python">import random
 from mt19937predictor import MT19937Predictor
 
@@ -530,7 +530,7 @@ for _ in range(624):
 
 assert random.getrandbits(32) == predictor.getrandbits(32)
 </code></pre>
-<p>题目一共有8次交互机会，当choice&#x3D;1，pq都是<code>getrandbits(1024-32)</code>，d是<code>getrandbits(1024-32-32)</code>，所以前7轮可以获得<code>(992*2+960)*7=20608</code>bits，满足MT19937所需要的<code>624*32=19968</code>bits</p>
+<p>题目一共有8次交互机会，当<code>choice=1</code>，pq都是<code>getrandbits(1024-32)</code>，d是<code>getrandbits(1024-32-32)</code>，所以前7轮可以获得<code>(992*2+960)*7=20608</code>bits，满足MT19937所需要的<code>624*32=19968</code>bits</p>
 <p>然后根据每一轮的N、e用连分数恢复p、q、d，就可以预测了</p>
 <h3 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h3><p>比赛的时候没找到题目对应的论文，只找到了<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
 <p><strong>注意</strong>：题目没有输出每一轮p和q的顺序，所以需要爆破互换pq的，复现为了方便验证，手动加上一个signal值</p>
@@ -628,10 +628,10 @@ print(flag)
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>2023 NepnepCTF RSA_random</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">868</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">866</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 10:19:40</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-12, 22:36:16</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-17, 10:04:39</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-NepnepCTF-RSA-random/" title="2023 NepnepCTF RSA_random">http://example.com/2023/10/10/2023-NepnepCTF-RSA-random/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。

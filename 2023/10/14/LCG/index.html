@@ -407,7 +407,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-17 08:33:19'>2023-10-14 10:18</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-17 10:03:06'>2023-10-14 10:18</time>
         
     </div>
     <div class="article-meta">
@@ -448,7 +448,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>线性同余法（LCG）是一种产生伪随机数的方法。</p>
-<p>$$ x_{n+1} &#x3D; (ax_n + b) \% p $$</p>
+<p>$ x_{n+1} &#x3D; (ax_n + b) \% p $</p>
 <p>主要的求解公式：</p>
 <table>
 <thead>
@@ -458,20 +458,20 @@
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">$$ x_n $$</td>
-<td align="center">$$ x_n &#x3D; a^{-1} (x_{n+1} - b) \% p $$</td>
+<td align="center">$ x_n $</td>
+<td align="center">$ x_n &#x3D; a^{-1} (x_{n+1} - b) \% p $</td>
 </tr>
 <tr>
 <td align="center">a</td>
-<td align="center">$$ a &#x3D; (x_{n+2} - x_{n+1}) * (x_{n+1} - x_n)^{-1} \% p $$</td>
+<td align="center">$ a &#x3D; (x_{n+2} - x_{n+1}) * (x_{n+1} - x_n)^{-1} \% p $</td>
 </tr>
 <tr>
 <td align="center">b</td>
-<td align="center">$$ b &#x3D; (x_{n+1} - ax_n) \% p $$</td>
+<td align="center">$ b &#x3D; (x_{n+1} - ax_n) \% p $</td>
 </tr>
 <tr>
 <td align="center">p</td>
-<td align="center">$$ t_n &#x3D; x_{n+1} - x_n，p &#x3D; \gcd (t_{n+1}t_{n-1} - t_n^2, t_nt_{n-2} - t_{n-1}^2) $$</td>
+<td align="center">$ t_n &#x3D; x_{n+1} - x_n，p &#x3D; \gcd (t_{n+1}t_{n-1} - t_n^2, t_nt_{n-2} - t_{n-1}^2) $</td>
 </tr>
 </tbody></table>
 <p>根据lcg算法主要有4种ctf题型：</p>
@@ -685,7 +685,7 @@ for p in all_p:
     <p><span class="copy-title">字数:</span><span class="post-count">928</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-14, 10:18:47</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-17, 08:33:19</p>
+    <p><span class="copy-title">最后更新:</span>2023-10-17, 10:03:06</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/14/LCG/" title="LCG">http://example.com/2023/10/14/LCG/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
