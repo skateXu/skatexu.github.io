@@ -297,6 +297,8 @@
             
             <li><a target="_blank" href="https://www.iamnahco3.cn/">IamNaHCO3</a></li>
             
+            <li><a target="_blank" href="https://ab1aze-on3.github.io/">On3</a></li>
+            
         </ul>
     </div>
 </div>
@@ -476,7 +478,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-17 10:06:08'>2023-10-10 11:51</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-03 11:15:11'>2023-10-10 11:51</time>
         
     </div>
     <div class="article-meta">
@@ -634,13 +636,14 @@ for i in range(2**15, 2**16):  #爆破gift的高16bit
             print(pq)
             break
 </code></pre>
-<h3 id="HNP-1"><a href="#HNP-1" class="headerlink" title="HNP"></a>HNP</h3><pre><code class="python">from random import randrange
+<h3 id="HNP-1"><a href="#HNP-1" class="headerlink" title="HNP"></a>HNP</h3><pre><code class="python">from sage.all import *
+from Crypto.Util.number import *
 
 Pbits = 512
 kbits = 16
 t = 38
 
-P = random_prime(2^Pbits)
+P = getPrime(Pbits)
 x = randrange(0, P)
 A = [randrange(0, P) for _ in range(t)]
 B = [(bi * x) % P for bi in A]
@@ -650,24 +653,24 @@ print(f&#39;P = &#123;P&#125;&#39;)
 print(f&#39;A = &#123;A&#125;&#39;)
 print(f&#39;b = &#123;b&#125;&#39;)
 
-AA = [inverse_mod(2^kbits,P) * Ai for Ai in A]
-BB = [inverse_mod(2^kbits,P) * (-bi) for bi in b]
+AA = [inverse_mod(2**kbits,P) * Ai for Ai in A]
+BB = [inverse_mod(2**kbits,P) * (-bi) for bi in b]
 
 M = Matrix(QQ, t+2, t+2)
 for i in range(t):
     M[i, i] = P
     M[t, i] = AA[i]
     M[t+1, i] = BB[i]
-M[t, t] = 2^(Pbits-kbits)/P
-M[t+1, t+1] = 2^(Pbits-kbits)
+M[t, t] = 2**(Pbits-kbits)/P
+M[t+1, t+1] = 2**(Pbits-kbits)
 
 res = M.LLL()
 B_high = [abs(int(i)) for i in res[1]]
 B_ = [(B_high[i]&lt;&lt;kbits) + int(b[i]) for i in range(t)]
-assert B == B_
+print(B == B_)
 
 x_ = (B_[0] * inverse_mod(A[0],P)) % P
-assert x == x_
+print(x == x_)
 </code></pre>
 
       
@@ -682,7 +685,7 @@ assert x == x_
     <p><span class="copy-title">字数:</span><span class="post-count">1.1k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 11:51:33</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-17, 10:06:08</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-03, 11:15:11</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-WMCTF-signin/" title="2023 WMCTF signin">http://example.com/2023/10/10/2023-WMCTF-signin/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。

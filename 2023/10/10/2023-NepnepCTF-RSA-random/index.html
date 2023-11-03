@@ -297,6 +297,8 @@
             
             <li><a target="_blank" href="https://www.iamnahco3.cn/">IamNaHCO3</a></li>
             
+            <li><a target="_blank" href="https://ab1aze-on3.github.io/">On3</a></li>
+            
         </ul>
     </div>
 </div>
@@ -478,12 +480,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-17 10:04:39'>2023-10-10 10:19</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-03 14:14:16'>2023-10-10 10:19</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:866</span>
+        <span>字数:867</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -592,10 +594,10 @@ assert random.getrandbits(32) == predictor.getrandbits(32)
 <p>然后根据每一轮的N、e用连分数恢复p、q、d，就可以预测了</p>
 <h3 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h3><p>比赛的时候没找到题目对应的论文，只找到了<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
 <p><strong>注意</strong>：题目没有输出每一轮p和q的顺序，所以需要爆破互换pq的，复现为了方便验证，手动加上一个signal值</p>
-<h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><pre><code class="Python">from Crypto.Cipher import PKCS1_v1_5
+<h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><pre><code class="Python">from sage.all import *
+from Crypto.Cipher import PKCS1_v1_5
 from Crypto.PublicKey import RSA
 from random import getrandbits
-from sys import exit
 from mt19937predictor import MT19937Predictor
 
 flag = &quot;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&quot;
@@ -603,76 +605,76 @@ global_bits = 1024
 
 def generate_prime(bits: int):
     p = (getrandbits(bits - 32) &lt;&lt; 32)
-    return next_prime(p)
+    return int(next_prime(p))
 
 def generate_private_key(bits: int):
     p, q = generate_prime(bits), generate_prime(bits)
     n, phi = p * q, lcm(p-1, q-1)
-    d = inverse_mod(0x10001, phi)
-    privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
-    return privateKey
+    d = int(inverse_mod(0x10001, phi))
+    privateKey = RSA.construct((n, 0x10001, d, p, q))
+    return privateKey, p &gt; q
 
 NN = []
 ee = []
 signal = []
 
-for _ in range(7):
+for i in range(7):
     p, q = generate_prime(global_bits), generate_prime(global_bits)
     if p &gt; q:
         signal.append(1)
     else:
         signal.append(0)
-    N = p*q
-    d = generate_prime(global_bits-32)
-    e = inverse_mod(d, (p * p - 1) * (q * q - 1))
+    N = p * q
+    d = generate_prime(global_bits - 32)
+    e = int(inverse_mod(d, (p * p - 1) * (q * q - 1)))
     NN.append(N)
     ee.append(e)
 
-privateKey = generate_private_key(global_bits)
+privateKey = generate_private_key(global_bits)[0]
 Cipher = PKCS1_v1_5.new(privateKey)
 c = Cipher.encrypt(flag.encode())
 # print(c)
 
-#连分数解pqd
+# 连分数解 pqd
 def attack(N, e):
-    convergents = continued_fraction(e/(N^2-9/4*N+1)).convergents()
+    convergents = continued_fraction(e / (N ** 2 - Integer(9) / Integer(4) * N + 1)).convergents()
     for c in convergents:
         k = c.numerator()
         d = c.denominator()
         if pow(pow(2, e, N), d, N) == 2:
             phi = (e * d - 1) // k
-            p_a_q = sqrt(N^2 + 1 - phi + 2*N)
-            p_s_q = sqrt(N^2 + 1 - phi - 2*N)
-            p = (p_a_q - p_s_q)//2
+            p_a_q = int(sqrt(N ** 2 + 1 - phi + 2 * N))
+            p_s_q = int(sqrt(N ** 2 + 1 - phi - 2 * N))
+            p = (p_a_q - p_s_q) // 2
             assert N % p == 0
-            q = N//p
-            d = inverse_mod(e, (p * p - 1) * (q * q - 1))
-            return int(p), int(q), int(d)
+            q = N // p
+            d = int(inverse_mod(e, (p * p - 1) * (q * q - 1)))
+            return p, q, d
 
 predictor = MT19937Predictor()
 
 for i in range(7):
-    # print(i)
-    p, q, d = attack(int(NN[i]), int(ee[i]))
-    #根据signal调整pq顺序
+    print(i)
+    p, q, d = attack(NN[i], ee[i])
+    # 根据 signal 调整 pq 顺序
     if signal[i] == 0:
         if p &gt; q:
             p, q = q, p
     else:
         if p &lt; q:
             p, q = q, p
-    
-    predictor.setrandbits(p&gt;&gt;32, 992)
-    predictor.setrandbits(q&gt;&gt;32, 992)
-    predictor.setrandbits(d&gt;&gt;32, 960)
 
-p = next_prime(predictor.getrandbits(992) &lt;&lt; 32)
-q = next_prime(predictor.getrandbits(992) &lt;&lt; 32)
+    predictor.setrandbits(p &gt;&gt; 32, 992)
+    predictor.setrandbits(q &gt;&gt; 32, 992)
+    predictor.setrandbits(d &gt;&gt; 32, 960)
+
+p = int(next_prime(predictor.getrandbits(992) &lt;&lt; 32))
+q = int(next_prime(predictor.getrandbits(992) &lt;&lt; 32))
 n, phi = p * q, lcm(p-1, q-1)
-d = inverse_mod(0x10001, phi)
-privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
+d = int(inverse_mod(0x10001, phi))
+privateKey = RSA.construct((n, 0x10001, d, p, q))
 Cipher = PKCS1_v1_5.new(privateKey)
-flag = Cipher.decrypt(c,&#39;\x00&#39;)
+flag = Cipher.decrypt(c, &#39;\x00&#39;)
 print(flag)
 # b&#39;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&#39;
 </code></pre>
@@ -686,10 +688,10 @@ print(flag)
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>2023 NepnepCTF RSA_random</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">866</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">867</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 10:19:40</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-17, 10:04:39</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-03, 14:14:16</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/10/2023-NepnepCTF-RSA-random/" title="2023 NepnepCTF RSA_random">http://example.com/2023/10/10/2023-NepnepCTF-RSA-random/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
