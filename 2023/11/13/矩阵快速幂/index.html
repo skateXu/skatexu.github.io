@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>LCG | skateXu</title>
+  <title>矩阵快速幂 | skateXu</title>
   <meta name="keywords" content="">
-  <meta name="description" content="LCG | skateXu">
+  <meta name="description" content="矩阵快速幂 | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="很抱歉，您所访问的地址并不存在">
 <meta property="og:type" content="website">
@@ -456,9 +456,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-LCG" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-矩阵快速幂" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">LCG</h1>
+        <h1 class="article-title">矩阵快速幂</h1>
     
     <div class="article-meta">
         
@@ -476,12 +476,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-10-17 10:03:06'>2023-10-14 10:18</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-13 19:59:40'>2023-11-13 11:38</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:928</span>
+        <span>字数:440</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -500,7 +500,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-1"><span class="toc-text">LCG-1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-2"><span class="toc-text">LCG-2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-3"><span class="toc-text">LCG-3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCG-4"><span class="toc-text">LCG-4</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97"><span class="toc-text">斐波那契数列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2"><span class="toc-text">矩阵变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E9%98%B6%E7%BA%BF%E6%80%A7%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">一阶线性递推式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2-1"><span class="toc-text">矩阵变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E9%98%B6%E7%BA%BF%E6%80%A7%E9%80%92%E6%8E%A8%E5%BC%8F"><span class="toc-text">二阶线性递推式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2-2"><span class="toc-text">矩阵变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="toc-text">代码</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -516,230 +516,84 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>线性同余法（LCG）是一种产生伪随机数的方法。</p>
-<p>$ x_{n+1} &#x3D; (ax_n + b) \% p $</p>
-<p>主要的求解公式：</p>
-<table>
-<thead>
-<tr>
-<th align="center">求解</th>
-<th align="center">公式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$ x_n $</td>
-<td align="center">$ x_n &#x3D; a^{-1} (x_{n+1} - b) \% p $</td>
-</tr>
-<tr>
-<td align="center">a</td>
-<td align="center">$ a &#x3D; (x_{n+2} - x_{n+1}) * (x_{n+1} - x_n)^{-1} \% p $</td>
-</tr>
-<tr>
-<td align="center">b</td>
-<td align="center">$ b &#x3D; (x_{n+1} - ax_n) \% p $</td>
-</tr>
-<tr>
-<td align="center">p</td>
-<td align="center">$ t_n &#x3D; x_{n+1} - x_n，p &#x3D; \gcd (t_{n+1}t_{n-1} - t_n^2, t_nt_{n-2} - t_{n-1}^2) $</td>
-</tr>
-</tbody></table>
-<p>根据lcg算法主要有4种ctf题型：</p>
-<h2 id="LCG-1"><a href="#LCG-1" class="headerlink" title="LCG-1"></a>LCG-1</h2><p>已知a，b，p，最后的seed</p>
-<pre><code class="python">from Crypto.Util.number import *
+        <p><img src="/../img/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/image-20231113153404815.png" alt="image-20231113153404815"></p>
+<p>下面说的都是<strong>一次</strong>递归公式，其他的例如像Quadratic Map这种二次递归，不一定有通项公式，不能用矩阵快速幂实现快速运算，得老老实实用递归或者渐进表达式。</p>
+<h2 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>$ a_n &#x3D; a_{n-1} + a_{n-2} $，其中$ a_0 &#x3D; 1 $，$ a_1 &#x3D; 1 $</p>
+<h3 id="矩阵变换"><a href="#矩阵变换" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$ \begin{bmatrix} a_n \ a_{n-1} \end{bmatrix} &#x3D; \begin{bmatrix} 1 &amp; 1 \ 1 &amp; 0 \end{bmatrix} \cdot \begin{bmatrix} a_{n-1} \ a_{n-2} \end{bmatrix} $</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
 
-flag = b&#39;flag&#123;******&#125;&#39;
-seed = bytes_to_long(flag)
-length = seed.bit_length()
+state = [1, 1]
 
-a = 155971836487521127413178805566278019291810483723477332740305259
-b = 202084599085918621034388670259032014348708452871335919618754423
-p = 199296574393235855574369935471815490856316662404539770651985589
+for i in range(1, 10**2+1):
+    y = state[i] + state[i-1]
+    state.append(y)
 
-for i in range(10):
-    seed = (a * seed + b) % p
+M1 = matrix([
+    [1, 1],
+    [1, 0]
+])
+M2 = matrix([
+    [state[1]],
+    [state[0]]
+])
 
-print(&quot;seed =&quot;, seed)
-# seed = 68551282599199125993658805253274162071651594471901897411266172
+state_ = (M1**(10**2) * M2)[0][0]
+assert state_ == state[-1]
 </code></pre>
-<p>解题脚本</p>
-<pre><code class="python">from Crypto.Util.number import *
+<h2 id="一阶线性递推式"><a href="#一阶线性递推式" class="headerlink" title="一阶线性递推式"></a>一阶线性递推式</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>$ f_n \equiv a \times f_{n-1} + b \mod p $</p>
+<h3 id="矩阵变换-1"><a href="#矩阵变换-1" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$ \begin{bmatrix} f_n \ b \end{bmatrix} &#x3D; \begin{bmatrix} a &amp; 1 \ 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \ b \end{bmatrix} $</p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
+from Crypto.Util.number import getRandomInteger
 
-a = 155971836487521127413178805566278019291810483723477332740305259
-b = 202084599085918621034388670259032014348708452871335919618754423
-p = 199296574393235855574369935471815490856316662404539770651985589
+state = [getRandomInteger(256)]
+a = getRandomInteger(256)
+b = getRandomInteger(256)
+p = getRandomInteger(256)
 
-MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
-ani = MMI(a, p)
-seed = 68551282599199125993658805253274162071651594471901897411266172
+for i in range(10**2): # 10**10000
+    y = (a * state[i] + b) % p
+    state.append(y)
 
-for i in range(10):
-    seed = (ani * (seed - b)) % p
+M1 = matrix(Zmod(p), [
+    [a, 1],
+    [0, 1],
+])
+M2 = matrix(Zmod(p), [
+    [state[0]],
+    [b],
+])
 
-print(long_to_bytes(seed))
-# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+state_ = (M1**(10**2) * M2)[0][0]
+assert state_ == state[-1]
 </code></pre>
-<h2 id="LCG-2"><a href="#LCG-2" class="headerlink" title="LCG-2"></a>LCG-2</h2><p>已知a，p，output[]的至少连续2个元素</p>
-<pre><code class="python">from Crypto.Util.number import *
+<h2 id="二阶线性递推式"><a href="#二阶线性递推式" class="headerlink" title="二阶线性递推式"></a>二阶线性递推式</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>$ f_n \equiv a \times f_{n-1} + b \times f_{n-2} + c \mod p $</p>
+<h3 id="矩阵变换-2"><a href="#矩阵变换-2" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$ \begin{bmatrix} f_n \ f_{n-1} \ c \end{bmatrix} &#x3D; \begin{bmatrix} a &amp; b &amp; 1 \ 1 &amp; 0 &amp; 0 \ 0 &amp; 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \ f_{n-2} \ c \end{bmatrix} $</p>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
+from Crypto.Util.number import getRandomInteger
 
-flag = b&#39;flag&#123;******&#125;&#39;
-seed = bytes_to_long(flag)
-length = seed.bit_length()
+state = [getRandomInteger(256), getRandomInteger(256)]
+a = getRandomInteger(256)
+b = getRandomInteger(256)
+c = getRandomInteger(256)
+p = getRandomInteger(256)
 
-a = 164031293329341681517343090279314923560076759098650542522957107
-b = getPrime(length)
-p = 205493536419436317448904933834796929859527270820306334380668191
+for i in range(1, 10**2+1): # 10**10000
+    y = (a * state[i] + b * state[i-1] + c) % p
+    state.append(y)
 
-output = []
-for i in range(10):
-    seed = (a * seed + b) % p
-    output.append(seed)
+A = matrix(Zmod(p), [
+    [a, b, 1],
+    [1, 0, 0],
+    [0, 0, 1],
+])
+B = matrix(Zmod(p), [
+    [state[1]],
+    [state[0]],
+    [c],
+])
 
-print(&quot;output6 =&quot;, output[6])
-print(&quot;output7 =&quot;, output[7])
-# output6 = 45745972511051576017008610408791747592523694924890977868463767
-# output7 = 47022551472047051529936224993657475046232093691394911203042968
-</code></pre>
-<p>解题脚本</p>
-<pre><code class="python">from Crypto.Util.number import *
-
-a = 164031293329341681517343090279314923560076759098650542522957107
-# b = getPrime(length)
-p = 205493536419436317448904933834796929859527270820306334380668191
-
-output6 = 45745972511051576017008610408791747592523694924890977868463767
-output7 = 47022551472047051529936224993657475046232093691394911203042968
-gift = [output6, output7]
-
-#求b
-b = (gift[1] - a * gift[0]) % p
-
-MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
-ani = MMI(a, p)
-seed = gift[0]
-
-for i in range(7):
-    seed = (ani * (seed - b)) % p
-
-print(long_to_bytes(seed))
-# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
-</code></pre>
-<h2 id="LCG-3"><a href="#LCG-3" class="headerlink" title="LCG-3"></a><strong>LCG-3</strong></h2><p>已知p，output[]的至少连续3个元素</p>
-<pre><code class="python">from Crypto.Util.number import *
-
-flag = b&#39;flag&#123;******&#125;&#39;
-seed = bytes_to_long(flag)
-length = seed.bit_length()
-
-a = getPrime(length)
-b = getPrime(length)
-p = 198631956575512484302101120778529528702856823120687410371716261
-
-output = []
-for i in range(10):
-    seed = (a * seed + b) % p
-    output.append(seed)
-
-print(&quot;output6 =&quot;, output[6])
-print(&quot;output7 =&quot;, output[7])
-print(&quot;output8 =&quot;, output[8])
-# output6 = 158657126406132303164720900786306081992669207557561976396601882
-# output7 = 173086776808844203987690862148966917477329732513213152207487530
-# output8 = 177076590008214173673645268154603521522421695802860665456135973
-</code></pre>
-<p>解题脚本</p>
-<pre><code class="python">from Crypto.Util.number import *
-
-# a = getPrime(length)
-# b = getPrime(length)
-p = 198631956575512484302101120778529528702856823120687410371716261
-
-output6 = 158657126406132303164720900786306081992669207557561976396601882
-output7 = 173086776808844203987690862148966917477329732513213152207487530
-output8 = 177076590008214173673645268154603521522421695802860665456135973
-gift = [output6, output7, output8]
-
-#求a
-MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
-a = (gift[2] - gift[1]) * MMI((gift[1] - gift[0]), p) % p
-
-#求b
-b = (gift[1] - a * gift[0]) % p
-
-ani = MMI(a, p)
-seed = gift[0]
-
-for i in range(7):
-    seed = (ani * (seed - b)) % p
-
-print(long_to_bytes(seed))
-# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
-</code></pre>
-<h2 id="LCG-4"><a href="#LCG-4" class="headerlink" title="LCG-4"></a>LCG-4</h2><p>已知output[]的至少连续5个元素（尽量多）</p>
-<pre><code class="python">from Crypto.Util.number import *
-
-flag = b&#39;flag&#123;******&#125;&#39;
-seed = bytes_to_long(flag)
-length = seed.bit_length()
-
-a = getPrime(length)
-b = getPrime(length)
-p = getPrime(length)
-
-output = []
-for i in range(10):
-    seed = (a * seed + b) % p
-    output.append(seed)
-
-print(&quot;output =&quot;, output)
-# output = [168629567557403367186885420444281063317304797350594299096453254, 37810059304430144255796769528019631599115017008645572272676848, 153467674569619182399277890239200868986878351528697622090498978, 130441867851875429652192551507870248584806009516471536255184738, 165072061865233441980188465107233439530695291179218871834569574, 169462757174386331962049136282171771458712297105156982582248590, 5733544729623964834423742564305810327645521588143518180790467, 29307267147593660845277077949962969239999900796071055310564887, 167961532214306463210330398007557832141937447147319867665370457, 18070228848659542858848007252120157475238819346210716562665302]
-</code></pre>
-<p>解题脚本</p>
-<pre><code class="python">from Crypto.Util.number import *
-import gmpy2
- 
-# a = getPrime(length)
-# b = getPrime(length)
-# p = getPrime(length)
-
-output = [168629567557403367186885420444281063317304797350594299096453254, 37810059304430144255796769528019631599115017008645572272676848, 153467674569619182399277890239200868986878351528697622090498978, 130441867851875429652192551507870248584806009516471536255184738, 165072061865233441980188465107233439530695291179218871834569574, 169462757174386331962049136282171771458712297105156982582248590, 5733544729623964834423742564305810327645521588143518180790467, 29307267147593660845277077949962969239999900796071055310564887, 167961532214306463210330398007557832141937447147319867665370457, 18070228848659542858848007252120157475238819346210716562665302]
-
-gift = output
-
-t = []
-for i in range(len(gift) - 1):
-    t.append(gift[i] - gift[i-1])
-
-all_p = []
-for i in range(len(t) - 2):
-    all_p.append(gmpy2.gcd((t[i+1] * t[i-1] - t[i] * t[i]), (t[i+2] * t[i] - t[i+1] * t[i+1])))
-
-for p in all_p:
-    p = abs(p)
-    if p == 1:
-        continue
-    
-    #求a
-    MMI = lambda A, n, s=1, t=0, N=0 : (n&lt;2 and t%N or MMI(n, A%n, t, s-A//n*t, N or n), -1)[n&lt;1]  #逆元计算
-    a = (gift[2] - gift[1]) * MMI((gift[1] - gift[0]), p) % p
-    
-    #求b
-    b = (gift[1] - a * gift[0]) % p
-    
-    ani = MMI(a, p)
-    seed = gift[0]
-    
-    for i in range(1):
-        seed = (ani * (seed - b)) % p
-    
-    print(long_to_bytes(seed))
-
-# b&#39;\x02&#39;
-# b&#39;\x02&#39;
-# b&#39;\x17b\xd3\x03\xcaV\x95\x9a\xc5\xe7C\xa6\x1f\xa3\x88\xd5L\x02\xf5\xa9I\xb2\xce\x17/\xc7\xa6&#39;
-# b&#39;\x1e\xb9I\xd93\xbd\x07\xcf\xbc\xbd\xe0\xf1\xf4\x18gB\xe8P\xfe;\x01B\xd2\xccy&gt;&#39;
-# b&#39;\rj5\xb4\x19\xd9\xef\xa4\xee\xb0x\x08y\xc6\x0f\x81\x91@\xaf\x16\xd5\xaf\xdb\x8c)\xca\x9e&#39;
-# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
-# b&#39;flag&#123;This_is_a_test_flag!&#125;&#39;
+state_ = (A**(10**2) * B)[0][0]
+assert state_ == state[-1]
 </code></pre>
 
       
@@ -750,12 +604,12 @@ for p in all_p:
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>LCG</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">928</span></p>
+    <p><span class="copy-title">文章标题:</span>矩阵快速幂</p>
+    <p><span class="copy-title">字数:</span><span class="post-count">440</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
-    <p><span class="copy-title">发布时间:</span>2023-10-14, 10:18:47</p>
-    <p><span class="copy-title">最后更新:</span>2023-10-17, 10:03:06</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/10/14/LCG/" title="LCG">http://example.com/2023/10/14/LCG/</a>
+    <p><span class="copy-title">发布时间:</span>2023-11-13, 11:38:37</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-13, 19:59:40</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/" title="矩阵快速幂">http://example.com/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
     </p>
