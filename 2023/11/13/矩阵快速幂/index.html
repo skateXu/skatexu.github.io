@@ -6,15 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="矩阵快速幂 | skateXu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="很抱歉，您所访问的地址并不存在">
+<meta name="description" content="个人简介Ab1azE战队の密码签到手，现大三，就读于厂川太字。 学习历程之前主要是学web和misc，22年7月开始着手crypto，但造诣尚浅。 最近初探区块链。。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="404 Not Found">
-<meta property="og:url" content="http://example.com/404.html">
+<meta property="og:title" content="About">
+<meta property="og:url" content="http://example.com/about/index.html">
 <meta property="og:site_name" content="skateXu">
-<meta property="og:description" content="很抱歉，您所访问的地址并不存在">
+<meta property="og:description" content="个人简介Ab1azE战队の密码签到手，现大三，就读于厂川太字。 学习历程之前主要是学web和misc，22年7月开始着手crypto，但造诣尚浅。 最近初探区块链。。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-10-10T03:03:58.000Z">
-<meta property="article:modified_time" content="2023-10-10T03:05:51.282Z">
+<meta property="article:published_time" content="2023-10-09T12:15:12.000Z">
+<meta property="article:modified_time" content="2023-10-26T06:31:57.086Z">
 <meta property="article:author" content="skateXu">
 <meta name="twitter:card" content="summary">
 
@@ -476,7 +476,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-11-14 11:14:30'>2023-11-13 11:38</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-14 15:05:31'>2023-11-13 11:38</time>
         
     </div>
     <div class="article-meta">
@@ -524,20 +524,20 @@
 
 state = [1, 1]
 
-for i in range(1, 10 ** 2 + 1):
-    y = state[i] + state[i - 1]
+for i in range(1, 10**2+1):
+    y = state[i] + state[i-1]
     state.append(y)
 
 M1 = matrix([
     [1, 1],
-    [1, 0]
+    [1, 0],
 ])
 M2 = matrix([
     [state[1]],
-    [state[0]]
+    [state[0]],
 ])
 
-state_ = (M1 ** (10 ** 2) * M2)[0][0]
+state_ = (M1**(10**2) * M2)[0][0]
 print(state_ == state[-1])
 </code></pre>
 <h2 id="一阶线性递推式"><a href="#一阶线性递推式" class="headerlink" title="一阶线性递推式"></a>一阶线性递推式</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>$ f_n \equiv a \times f_{n-1} + b \mod{p} $</p>
@@ -550,7 +550,7 @@ a = getRandomInteger(256)
 b = getRandomInteger(256)
 p = getRandomInteger(256)
 
-for i in range(10 ** 2):  # 10 ** 10000
+for i in range(10**2):  # 10**10000
     y = (a * state[i] + b) % p
     state.append(y)
 
@@ -563,7 +563,7 @@ M2 = matrix(Zmod(p), [
     [b],
 ])
 
-state_ = (M1 ** (10 ** 2) * M2)[0][0]
+state_ = (M1**(10**2) * M2)[0][0]
 print(state_ == state[-1])
 </code></pre>
 <h2 id="二阶线性递推式"><a href="#二阶线性递推式" class="headerlink" title="二阶线性递推式"></a>二阶线性递推式</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>$ f_n \equiv a \times f_{n-1} + b \times f_{n-2} + c \mod{p} $</p>
@@ -577,22 +577,22 @@ b = getRandomInteger(256)
 c = getRandomInteger(256)
 p = getRandomInteger(256)
 
-for i in range(1, 10 ** 2 + 1):  # 10 ** 10000
-    y = (a * state[i] + b * state[i - 1] + c) % p
+for i in range(1, 10**2+1):  # 10**10000
+    y = (a * state[i] + b * state[i-1] + c) % p
     state.append(y)
 
-A = matrix(Zmod(p), [
+M1 = matrix(Zmod(p), [
     [a, b, 1],
     [1, 0, 0],
     [0, 0, 1],
 ])
-B = matrix(Zmod(p), [
+M2 = matrix(Zmod(p), [
     [state[1]],
     [state[0]],
     [c],
 ])
 
-state_ = (A ** (10 ** 2) * B)[0][0]
+state_ = (M1**(10**2) * M2)[0][0]
 print(state_ == state[-1])
 </code></pre>
 
@@ -608,7 +608,7 @@ print(state_ == state[-1])
     <p><span class="copy-title">字数:</span><span class="post-count">440</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-13, 11:38:37</p>
-    <p><span class="copy-title">最后更新:</span>2023-11-14, 11:14:30</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-14, 15:05:31</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/" title="矩阵快速幂">http://example.com/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
