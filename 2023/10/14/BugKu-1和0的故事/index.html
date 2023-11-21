@@ -147,7 +147,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(10)</small>
+                <small>(11)</small>
             
         </div>
     </li>
@@ -159,7 +159,7 @@
         <div data-rel="笔记">
             
             笔记
-            <small>(2)</small>
+            <small>(3)</small>
         </div>
         
     </li>
@@ -270,8 +270,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="10">
-<input type="hidden" id="yelog_site_word_count" value="6.3k">
+<input type="hidden" id="yelog_site_posts_number" value="11">
+<input type="hidden" id="yelog_site_word_count" value="6.4k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -356,6 +356,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 笔记 "
+           href="/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-给出hint">RSA-给出hint</span>
+            <span class="post-date" title="2023-11-21 11:06:27">2023/11/21</span>
+        </a>
         
         
         <a  class="全部文章 考研 高数 "
@@ -499,7 +508,7 @@
     </div>
     <div class="article-meta">
         
-        <span>字数:588</span>
+        <span>字数:596</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -518,7 +527,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%88Excel%EF%BC%89"><span class="toc-text">方法一（Excel）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%88PIL%EF%BC%89"><span class="toc-text">方法二（PIL）</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80excel"><span class="toc-text">方法一（Excel）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8Cpil"><span class="toc-text">方法二（PIL）</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -559,110 +568,131 @@
 0000000000011001011110111
 0000000001001100100100001
 0000000011000011011011001
-0000000011010000101110101
-</code></pre>
+0000000011010000101110101</code></pre>
 <p>附件内容是一个25*25的01矩阵。用1表示黑色方块，0表示白色方块，猜测这是一个缺少定位符的二维码。</p>
-<h2 id="方法一（Excel）"><a href="#方法一（Excel）" class="headerlink" title="方法一（Excel）"></a>方法一（Excel）</h2><pre><code class="python">import xlwt
-
-# 创建一个xls
-book = xlwt.Workbook()
-# 创建一个样式 (黑色填充，无边界)
-Style = xlwt.easyxf(&#39;pattern: pattern solid, fore_colour black; font: height 250&#39;)
-# 添加一个表单，允许覆盖
-table = book.add_sheet(&#39;flag_code&#39;, cell_overwrite_ok=True)
-
-with open(&#39;1.txt&#39;, &#39;r&#39;) as f:
-    s = &quot;&quot;.join(f.read().splitlines())
-
-MAX = 25  #二维码边长，若大于256需要用xlsxwriter模块
-
-i = 0
-for y in range(0, MAX):
-    for x in range(0, MAX):
-        table.col(x).width = 256*3  #256为衡量单位，3表示3个字符宽度
-        if(s[i] == &#39;1&#39;):  #如果是1则在Excel上涂黑
-            table.write(y, x, &#39;&#39;, style=Style)
-        i += 1
-
-book.save(&#39;1和0的故事.xls&#39;)
-</code></pre>
+<h2 id="方法一excel">方法一（Excel）</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xlwt</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建一个xls</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>book <span class="op">=</span> xlwt.Workbook()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建一个样式 (黑色填充，无边界)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Style <span class="op">=</span> xlwt.easyxf(<span class="st">&#39;pattern: pattern solid, fore_colour black; font: height 250&#39;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加一个表单，允许覆盖</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> book.add_sheet(<span class="st">&#39;flag_code&#39;</span>, cell_overwrite_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;1.txt&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="st">&quot;&quot;</span>.join(f.read().splitlines())</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>MAX <span class="op">=</span> <span class="dv">25</span>  <span class="co">#二维码边长，若大于256需要用xlsxwriter模块</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, MAX):</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, MAX):</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        table.col(x).width <span class="op">=</span> <span class="dv">256</span><span class="op">*</span><span class="dv">3</span>  <span class="co">#256为衡量单位，3表示3个字符宽度</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(s[i] <span class="op">==</span> <span class="st">&#39;1&#39;</span>):  <span class="co">#如果是1则在Excel上涂黑</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>            table.write(y, x, <span class="st">&#39;&#39;</span>, style<span class="op">=</span>Style)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>book.save(<span class="st">&#39;1和0的故事.xls&#39;</span>)</span></code></pre></div>
 <p>加入二维码定位符</p>
-<pre><code class="python"># 7*7的二维码定位符
-locator = [
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1]
-]
-
-def draw_locator(y, x):
-    for i in range(7):
-        for j in range(7):
-            pos1 = locator[i][j]
-            if pos1 == 1:  #如果是1则在Excel上涂黑
-                table.write(y+i, x+j, &#39;&#39;, style=Style)
-
-draw_locator(0, 0)  #左上角
-draw_locator(0, 18)  #右上角
-draw_locator(18, 0)  #左下角
-
-book.save(&#39;1和0的故事.xls&#39;)
-</code></pre>
-<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110419730.png" alt="image-20231014110419730"></p>
-<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110617274.png" alt="image-20231014110617274"></p>
-<h2 id="方法二（PIL）"><a href="#方法二（PIL）" class="headerlink" title="方法二（PIL）"></a>方法二（PIL）</h2><pre><code class="python">from PIL import Image
-
-with open(&#39;1.txt&#39;, &#39;r&#39;) as f:
-    s = &quot;&quot;.join(f.read().splitlines())
-
-MAX = 25  #二维码边长
-pic = Image.new(&quot;1&quot;, (MAX, MAX))
-
-i = 0
-for y in range(0, MAX):
-    for x in range(0, MAX):
-        if(s[i] == &#39;1&#39;):
-            pic.putpixel([x, y], 0)
-        else:
-            pic.putpixel([x, y], 1)
-        i += 1
-
-pic.show()
-pic.save(&quot;1和0的故事.png&quot;)
-</code></pre>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 7*7的二维码定位符</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>locator <span class="op">=</span> [</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_locator(y, x):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            pos1 <span class="op">=</span> locator[i][j]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> pos1 <span class="op">==</span> <span class="dv">1</span>:  <span class="co">#如果是1则在Excel上涂黑</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                table.write(y<span class="op">+</span>i, x<span class="op">+</span>j, <span class="st">&#39;&#39;</span>, style<span class="op">=</span>Style)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">0</span>, <span class="dv">0</span>)  <span class="co">#左上角</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">0</span>, <span class="dv">18</span>)  <span class="co">#右上角</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">18</span>, <span class="dv">0</span>)  <span class="co">#左下角</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>book.save(<span class="st">&#39;1和0的故事.xls&#39;</span>)</span></code></pre></div>
+<figure>
+<img
+src="../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110419730.png"
+alt="image-20231014110419730" />
+<figcaption aria-hidden="true">image-20231014110419730</figcaption>
+</figure>
+<figure>
+<img
+src="../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110617274.png"
+alt="image-20231014110617274" />
+<figcaption aria-hidden="true">image-20231014110617274</figcaption>
+</figure>
+<h2 id="方法二pil">方法二（PIL）</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;1.txt&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="st">&quot;&quot;</span>.join(f.read().splitlines())</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>MAX <span class="op">=</span> <span class="dv">25</span>  <span class="co">#二维码边长</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>pic <span class="op">=</span> Image.new(<span class="st">&quot;1&quot;</span>, (MAX, MAX))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, MAX):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, MAX):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(s[i] <span class="op">==</span> <span class="st">&#39;1&#39;</span>):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            pic.putpixel([x, y], <span class="dv">0</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            pic.putpixel([x, y], <span class="dv">1</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>pic.show()</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>pic.save(<span class="st">&quot;1和0的故事.png&quot;</span>)</span></code></pre></div>
 <p>加入二维码定位符</p>
-<pre><code class="python"># 7*7的二维码定位符
-locator = [
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1]
-]
-
-def draw_locator(y, x):
-    for i in range(7):
-        for j in range(7):
-            pos1 = locator[i][j]
-            if(pos1 == 1):
-                pic.putpixel([x+i, y+j], 0)
-            else:
-                pic.putpixel([x+i, y+j], 1)
-
-draw_locator(0, 0)  #左上角
-draw_locator(0, 18)  #右上角
-draw_locator(18, 0)  #左下角
-
-pic.show()
-pic.save(&quot;1和0的故事.png&quot;)
-</code></pre>
-<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110859750.png" alt="image-20231014110859750"></p>
-<p><img src="/../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110943899.png" alt="image-20231014110943899"></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 7*7的二维码定位符</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>locator <span class="op">=</span> [</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_locator(y, x):</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            pos1 <span class="op">=</span> locator[i][j]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span>(pos1 <span class="op">==</span> <span class="dv">1</span>):</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                pic.putpixel([x<span class="op">+</span>i, y<span class="op">+</span>j], <span class="dv">0</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                pic.putpixel([x<span class="op">+</span>i, y<span class="op">+</span>j], <span class="dv">1</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">0</span>, <span class="dv">0</span>)  <span class="co">#左上角</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">0</span>, <span class="dv">18</span>)  <span class="co">#右上角</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>draw_locator(<span class="dv">18</span>, <span class="dv">0</span>)  <span class="co">#左下角</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>pic.show()</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>pic.save(<span class="st">&quot;1和0的故事.png&quot;</span>)</span></code></pre></div>
+<figure>
+<img
+src="../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110859750.png"
+alt="image-20231014110859750" />
+<figcaption aria-hidden="true">image-20231014110859750</figcaption>
+</figure>
+<figure>
+<img
+src="../img/BugKu-1%E5%92%8C0%E7%9A%84%E6%95%85%E4%BA%8B/image-20231014110943899.png"
+alt="image-20231014110943899" />
+<figcaption aria-hidden="true">image-20231014110943899</figcaption>
+</figure>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -673,7 +703,7 @@ pic.save(&quot;1和0的故事.png&quot;)
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>BugKu 1和0的故事</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">588</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">596</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-14, 10:48:41</p>
     <p><span class="copy-title">最后更新:</span>2023-10-19, 19:03:51</p>

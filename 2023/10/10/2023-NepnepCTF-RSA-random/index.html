@@ -147,7 +147,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(10)</small>
+                <small>(11)</small>
             
         </div>
     </li>
@@ -159,7 +159,7 @@
         <div data-rel="笔记">
             
             笔记
-            <small>(2)</small>
+            <small>(3)</small>
         </div>
         
     </li>
@@ -270,8 +270,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="10">
-<input type="hidden" id="yelog_site_word_count" value="6.3k">
+<input type="hidden" id="yelog_site_posts_number" value="11">
+<input type="hidden" id="yelog_site_word_count" value="6.4k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -356,6 +356,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 笔记 "
+           href="/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-给出hint">RSA-给出hint</span>
+            <span class="post-date" title="2023-11-21 11:06:27">2023/11/21</span>
+        </a>
         
         
         <a  class="全部文章 考研 高数 "
@@ -503,7 +512,7 @@
     </div>
     <div class="article-meta">
         
-        <span>字数:867</span>
+        <span>字数:868</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -522,7 +531,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MT19937-PRNG%E9%A2%84%E6%B5%8B"><span class="toc-text">MT19937 PRNG预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="toc-text">连分数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%A4%8D%E7%8E%B0"><span class="toc-text">本地复现</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mt19937-prng%E9%A2%84%E6%B5%8B"><span class="toc-text">MT19937 PRNG预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="toc-text">连分数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%A4%8D%E7%8E%B0"><span class="toc-text">本地复现</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -538,164 +547,173 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h2><pre><code class="Python">from gmpy2 import next_prime, invert as inverse_mod
-from Crypto.Cipher import PKCS1_v1_5
-from Crypto.PublicKey import RSA
-from random import getrandbits
-from math import lcm
-from sys import exit
-
-global_bits = 1024
-
-BANNER = rb&quot;&quot;&quot;
-.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.
-| N.--.  | E.--.  | P.--.  | C.--.  | T.--.  | F.--.  | H.--.  | A.--.  | P.--.  | P.--.  | Y.--.  |
-|  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  (\/)  |
-|  :\/:  |  :\/:  |  ()()  |  (__)  |  :\/:  |  (__)  |  :\/:  |  ()()  |  :\/:  |  :\/:  |  :\/:  |
-|  &#39;--&#39;n |  &#39;--&#39;e |  &#39;--&#39;p |  &#39;--&#39;c | &#39;--&#39;t  |  &#39;--&#39;f |  &#39;--&#39;h |  &#39;--&#39;a |  &#39;--&#39;p |  &#39;--&#39;p |  &#39;--&#39;y |
-`--------`--------`--------`--------&#39;--------`--------`--------`--------`--------`--------`--------`
-&quot;&quot;&quot;
-
-
-def generate_prime(bits: int):
-    p = (getrandbits(bits - 32) &lt;&lt; 32)
-    return next_prime(p)
-
-
-def generate_private_key(bits: int):
-    p, q = generate_prime(bits), generate_prime(bits)
-    n, phi = p * q, lcm(p-1, q-1)
-
-    d = inverse_mod(0x10001, phi)
-    privateKey = RSA.construct((int(n), int(0x10001), int(d), int(p), int(q)))
-    return privateKey, p &gt; q
-
-
-if __name__ == &quot;__main__&quot;:
-    print(BANNER.decode())
-    print(&quot;Welcome to the world of random RSA.&quot;)
-    print(&quot;Please make your choice.&quot;)
-    for _ in range(8):
-        choice = input()
-
-        if choice == &#39;1&#39;:
-            p, q = generate_prime(global_bits), generate_prime(global_bits)
-            N = p*q
-            d = generate_prime(global_bits-32)
-            e = inverse_mod(d, (p * p - 1) * (q * q - 1))
-            print(f&quot;&#123;int(N)&#125;&quot;)
-            print(f&quot;&#123;int(e)&#125;&quot;)
-
-        elif choice == &#39;2&#39;:
-            privateKey, signal = generate_private_key(global_bits)
-            Cipher = PKCS1_v1_5.new(privateKey)
-            c = (Cipher.encrypt(flag.encode()))
-            print(c)
-            exit()
-
-        else:
-            exit()
-</code></pre>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="MT19937-PRNG预测"><a href="#MT19937-PRNG预测" class="headerlink" title="MT19937 PRNG预测"></a>MT19937 PRNG预测</h3><p>观察choice，发现<code>choice=1</code>和<code>choice=2</code>好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937 PRNG预测</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">mersenne-twister-predictor</a></p>
-<pre><code class="Python">import random
-from mt19937predictor import MT19937Predictor
-
-predictor = MT19937Predictor()
-for _ in range(624):
-    x = random.getrandbits(32)
-    predictor.setrandbits(x, 32)
-
-assert random.getrandbits(32) == predictor.getrandbits(32)
-</code></pre>
+        <h2 id="题目源码">题目源码</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gmpy2 <span class="im">import</span> next_prime, invert <span class="im">as</span> inverse_mod</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Cipher <span class="im">import</span> PKCS1_v1_5</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.PublicKey <span class="im">import</span> RSA</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> getrandbits</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> lcm</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sys <span class="im">import</span> exit</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>global_bits <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>BANNER <span class="op">=</span> <span class="vs">rb&quot;&quot;&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="vs">.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.--------.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="vs">| N.--.  | E.--.  | P.--.  | C.--.  | T.--.  | F.--.  | H.--.  | A.--.  | P.--.  | P.--.  | Y.--.  |</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="vs">|  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  :/\:  |  (\/)  |  :():  |  :/\:  |  :/\:  |  (\/)  |</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="vs">|  :\/:  |  :\/:  |  ()()  |  (__)  |  :\/:  |  (__)  |  :\/:  |  ()()  |  :\/:  |  :\/:  |  :\/:  |</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="vs">|  &#39;--&#39;n |  &#39;--&#39;e |  &#39;--&#39;p |  &#39;--&#39;c | &#39;--&#39;t  |  &#39;--&#39;f |  &#39;--&#39;h |  &#39;--&#39;a |  &#39;--&#39;p |  &#39;--&#39;p |  &#39;--&#39;y |</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="vs">`--------`--------`--------`--------&#39;--------`--------`--------`--------`--------`--------`--------`</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="vs">&quot;&quot;&quot;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_prime(bits: <span class="bu">int</span>):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> (getrandbits(bits <span class="op">-</span> <span class="dv">32</span>) <span class="op">&lt;&lt;</span> <span class="dv">32</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> next_prime(p)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_private_key(bits: <span class="bu">int</span>):</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    p, q <span class="op">=</span> generate_prime(bits), generate_prime(bits)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    n, phi <span class="op">=</span> p <span class="op">*</span> q, lcm(p<span class="op">-</span><span class="dv">1</span>, q<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> inverse_mod(<span class="bn">0x10001</span>, phi)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    privateKey <span class="op">=</span> RSA.construct((<span class="bu">int</span>(n), <span class="bu">int</span>(<span class="bn">0x10001</span>), <span class="bu">int</span>(d), <span class="bu">int</span>(p), <span class="bu">int</span>(q)))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> privateKey, p <span class="op">&gt;</span> q</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(BANNER.decode())</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Welcome to the world of random RSA.&quot;</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Please make your choice.&quot;</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        choice <span class="op">=</span> <span class="bu">input</span>()</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> choice <span class="op">==</span> <span class="st">&#39;1&#39;</span>:</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            p, q <span class="op">=</span> generate_prime(global_bits), generate_prime(global_bits)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            N <span class="op">=</span> p<span class="op">*</span>q</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>            d <span class="op">=</span> generate_prime(global_bits<span class="op">-</span><span class="dv">32</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> inverse_mod(d, (p <span class="op">*</span> p <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (q <span class="op">*</span> q <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">&#123;</span><span class="bu">int</span>(N)<span class="sc">&#125;</span><span class="ss">&quot;</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">&#123;</span><span class="bu">int</span>(e)<span class="sc">&#125;</span><span class="ss">&quot;</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> choice <span class="op">==</span> <span class="st">&#39;2&#39;</span>:</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>            privateKey, signal <span class="op">=</span> generate_private_key(global_bits)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>            Cipher <span class="op">=</span> PKCS1_v1_5.new(privateKey)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>            c <span class="op">=</span> (Cipher.encrypt(flag.encode()))</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(c)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>            exit()</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            exit()</span></code></pre></div>
+<h2 id="分析">分析</h2>
+<h3 id="mt19937-prng预测">MT19937 PRNG预测</h3>
+<p>观察choice，发现<code>choice=1</code>和<code>choice=2</code>好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937
+PRNG预测</p>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">mersenne-twister-predictor</a></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mt19937predictor <span class="im">import</span> MT19937Predictor</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> MT19937Predictor()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">624</span>):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> random.getrandbits(<span class="dv">32</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    predictor.setrandbits(x, <span class="dv">32</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> random.getrandbits(<span class="dv">32</span>) <span class="op">==</span> predictor.getrandbits(<span class="dv">32</span>)</span></code></pre></div>
 <p>题目一共有8次交互机会，当<code>choice=1</code>，pq都是<code>getrandbits(1024-32)</code>，d是<code>getrandbits(1024-32-32)</code>，所以前7轮可以获得<code>(992*2+960)*7=20608</code>bits，满足MT19937所需要的<code>624*32=19968</code>bits</p>
 <p>然后根据每一轮的N、e用连分数恢复p、q、d，就可以预测了</p>
-<h3 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h3><p>比赛的时候没找到题目对应的论文，只找到了<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
+<h3 id="连分数">连分数</h3>
+<p>比赛的时候没找到题目对应的论文，只找到了<a
+target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA
+weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
 <p><strong>注意</strong>：题目没有输出每一轮p和q的顺序，所以需要爆破互换pq的，复现为了方便验证，手动加上一个signal值</p>
-<h2 id="本地复现"><a href="#本地复现" class="headerlink" title="本地复现"></a>本地复现</h2><pre><code class="Python">from sage.all import *
-from Crypto.Cipher import PKCS1_v1_5
-from Crypto.PublicKey import RSA
-from random import getrandbits
-from mt19937predictor import MT19937Predictor
-
-flag = &quot;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&quot;
-global_bits = 1024
-
-def generate_prime(bits: int):
-    p = (getrandbits(bits - 32) &lt;&lt; 32)
-    return int(next_prime(p))
-
-def generate_private_key(bits: int):
-    p, q = generate_prime(bits), generate_prime(bits)
-    n, phi = p * q, lcm(p-1, q-1)
-    d = int(inverse_mod(0x10001, phi))
-    privateKey = RSA.construct((n, 0x10001, d, p, q))
-    return privateKey, p &gt; q
-
-NN = []
-ee = []
-signal = []
-
-for i in range(7):
-    p, q = generate_prime(global_bits), generate_prime(global_bits)
-    if p &gt; q:
-        signal.append(1)
-    else:
-        signal.append(0)
-    N = p * q
-    d = generate_prime(global_bits - 32)
-    e = int(inverse_mod(d, (p * p - 1) * (q * q - 1)))
-    NN.append(N)
-    ee.append(e)
-
-privateKey = generate_private_key(global_bits)[0]
-Cipher = PKCS1_v1_5.new(privateKey)
-c = Cipher.encrypt(flag.encode())
-# print(c)
-
-# 连分数解 pqd
-def attack(N, e):
-    convergents = continued_fraction(e / (N ** 2 - Integer(9) / Integer(4) * N + 1)).convergents()
-    for c in convergents:
-        k = c.numerator()
-        d = c.denominator()
-        if pow(pow(2, e, N), d, N) == 2:
-            phi = (e * d - 1) // k
-            p_a_q = int(sqrt(N ** 2 + 1 - phi + 2 * N))
-            p_s_q = int(sqrt(N ** 2 + 1 - phi - 2 * N))
-            p = (p_a_q - p_s_q) // 2
-            assert N % p == 0
-            q = N // p
-            d = int(inverse_mod(e, (p * p - 1) * (q * q - 1)))
-            return p, q, d
-
-predictor = MT19937Predictor()
-
-for i in range(7):
-    print(i)
-    p, q, d = attack(NN[i], ee[i])
-    # 根据 signal 调整 pq 顺序
-    if signal[i] == 0:
-        if p &gt; q:
-            p, q = q, p
-    else:
-        if p &lt; q:
-            p, q = q, p
-
-    predictor.setrandbits(p &gt;&gt; 32, 992)
-    predictor.setrandbits(q &gt;&gt; 32, 992)
-    predictor.setrandbits(d &gt;&gt; 32, 960)
-
-p = int(next_prime(predictor.getrandbits(992) &lt;&lt; 32))
-q = int(next_prime(predictor.getrandbits(992) &lt;&lt; 32))
-n, phi = p * q, lcm(p-1, q-1)
-d = int(inverse_mod(0x10001, phi))
-privateKey = RSA.construct((n, 0x10001, d, p, q))
-Cipher = PKCS1_v1_5.new(privateKey)
-flag = Cipher.decrypt(c, &#39;\x00&#39;)
-print(flag)
-# b&#39;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&#39;
-</code></pre>
+<h2 id="本地复现">本地复现</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Cipher <span class="im">import</span> PKCS1_v1_5</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.PublicKey <span class="im">import</span> RSA</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> getrandbits</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mt19937predictor <span class="im">import</span> MT19937Predictor</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>flag <span class="op">=</span> <span class="st">&quot;NepCTF</span><span class="sc">&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;</span><span class="st">&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>global_bits <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_prime(bits: <span class="bu">int</span>):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> (getrandbits(bits <span class="op">-</span> <span class="dv">32</span>) <span class="op">&lt;&lt;</span> <span class="dv">32</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(next_prime(p))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_private_key(bits: <span class="bu">int</span>):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    p, q <span class="op">=</span> generate_prime(bits), generate_prime(bits)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    n, phi <span class="op">=</span> p <span class="op">*</span> q, lcm(p<span class="op">-</span><span class="dv">1</span>, q<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="bu">int</span>(inverse_mod(<span class="bn">0x10001</span>, phi))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    privateKey <span class="op">=</span> RSA.construct((n, <span class="bn">0x10001</span>, d, p, q))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> privateKey, p <span class="op">&gt;</span> q</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>NN <span class="op">=</span> []</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>ee <span class="op">=</span> []</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>signal <span class="op">=</span> []</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    p, q <span class="op">=</span> generate_prime(global_bits), generate_prime(global_bits)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> p <span class="op">&gt;</span> q:</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        signal.append(<span class="dv">1</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        signal.append(<span class="dv">0</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> p <span class="op">*</span> q</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> generate_prime(global_bits <span class="op">-</span> <span class="dv">32</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> <span class="bu">int</span>(inverse_mod(d, (p <span class="op">*</span> p <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (q <span class="op">*</span> q <span class="op">-</span> <span class="dv">1</span>)))</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    NN.append(N)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    ee.append(e)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>privateKey <span class="op">=</span> generate_private_key(global_bits)[<span class="dv">0</span>]</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>Cipher <span class="op">=</span> PKCS1_v1_5.new(privateKey)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Cipher.encrypt(flag.encode())</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co"># print(c)</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 连分数解 pqd</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> attack(N, e):</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    convergents <span class="op">=</span> continued_fraction(e <span class="op">/</span> (N <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> Integer(<span class="dv">9</span>) <span class="op">/</span> Integer(<span class="dv">4</span>) <span class="op">*</span> N <span class="op">+</span> <span class="dv">1</span>)).convergents()</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> convergents:</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        k <span class="op">=</span> c.numerator()</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> c.denominator()</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">pow</span>(<span class="bu">pow</span>(<span class="dv">2</span>, e, N), d, N) <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>            phi <span class="op">=</span> (e <span class="op">*</span> d <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> k</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            p_a_q <span class="op">=</span> <span class="bu">int</span>(sqrt(N <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span> <span class="op">-</span> phi <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> N))</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>            p_s_q <span class="op">=</span> <span class="bu">int</span>(sqrt(N <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span> <span class="op">-</span> phi <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> N))</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>            p <span class="op">=</span> (p_a_q <span class="op">-</span> p_s_q) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> N <span class="op">%</span> p <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            q <span class="op">=</span> N <span class="op">//</span> p</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>            d <span class="op">=</span> <span class="bu">int</span>(inverse_mod(e, (p <span class="op">*</span> p <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (q <span class="op">*</span> q <span class="op">-</span> <span class="dv">1</span>)))</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> p, q, d</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> MT19937Predictor()</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">7</span>):</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    p, q, d <span class="op">=</span> attack(NN[i], ee[i])</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 根据 signal 调整 pq 顺序</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> signal[i] <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p <span class="op">&gt;</span> q:</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>            p, q <span class="op">=</span> q, p</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p <span class="op">&lt;</span> q:</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>            p, q <span class="op">=</span> q, p</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    predictor.setrandbits(p <span class="op">&gt;&gt;</span> <span class="dv">32</span>, <span class="dv">992</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    predictor.setrandbits(q <span class="op">&gt;&gt;</span> <span class="dv">32</span>, <span class="dv">992</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    predictor.setrandbits(d <span class="op">&gt;&gt;</span> <span class="dv">32</span>, <span class="dv">960</span>)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="bu">int</span>(next_prime(predictor.getrandbits(<span class="dv">992</span>) <span class="op">&lt;&lt;</span> <span class="dv">32</span>))</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="bu">int</span>(next_prime(predictor.getrandbits(<span class="dv">992</span>) <span class="op">&lt;&lt;</span> <span class="dv">32</span>))</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>n, phi <span class="op">=</span> p <span class="op">*</span> q, lcm(p<span class="op">-</span><span class="dv">1</span>, q<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="bu">int</span>(inverse_mod(<span class="bn">0x10001</span>, phi))</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>privateKey <span class="op">=</span> RSA.construct((n, <span class="bn">0x10001</span>, d, p, q))</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>Cipher <span class="op">=</span> PKCS1_v1_5.new(privateKey)</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>flag <span class="op">=</span> Cipher.decrypt(c, <span class="st">&#39;</span><span class="ch">\x00</span><span class="st">&#39;</span>)</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(flag)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="co"># b&#39;NepCTF&#123;c4e4356067fb3bedc53dde7af59beb1c&#125;&#39;</span></span></code></pre></div>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -706,7 +724,7 @@ print(flag)
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>2023 NepnepCTF RSA_random</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">867</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">868</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-10-10, 10:19:40</p>
     <p><span class="copy-title">最后更新:</span>2023-11-03, 14:14:16</p>

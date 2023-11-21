@@ -147,7 +147,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(10)</small>
+                <small>(11)</small>
             
         </div>
     </li>
@@ -159,7 +159,7 @@
         <div data-rel="笔记">
             
             笔记
-            <small>(2)</small>
+            <small>(3)</small>
         </div>
         
     </li>
@@ -270,8 +270,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="10">
-<input type="hidden" id="yelog_site_word_count" value="6.3k">
+<input type="hidden" id="yelog_site_posts_number" value="11">
+<input type="hidden" id="yelog_site_word_count" value="6.4k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -356,6 +356,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 笔记 "
+           href="/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-给出hint">RSA-给出hint</span>
+            <span class="post-date" title="2023-11-21 11:06:27">2023/11/21</span>
+        </a>
         
         
         <a  class="全部文章 考研 高数 "
@@ -525,101 +534,104 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="str和bytes"><a href="#str和bytes" class="headerlink" title="str和bytes"></a>str和bytes</h2><pre><code class="python">&gt;&gt;&gt; str_ = &quot;PK\x03\x04&quot;
-&gt;&gt;&gt; str_.encode()
-b&#39;PK\x03\x04&#39;
-
-&gt;&gt;&gt; bytes_ = b&#39;PK\x03\x04&#39;
-&gt;&gt;&gt; bytes_.decode()
-&#39;PK\x03\x04&#39;
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; str_ = &quot;504B0304&quot;
-&gt;&gt;&gt; bytes.fromhex(str_)
-b&#39;PK\x03\x04&#39;
-
-&gt;&gt;&gt; bytes_ = b&#39;PK\x03\x04&#39;
-&gt;&gt;&gt; bytes_.hex()
-&quot;504b0304&quot;
-</code></pre>
+        <h2 id="str和bytes">str和bytes</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> str_ <span class="op">=</span> <span class="st">&quot;PK</span><span class="ch">\x03\x04</span><span class="st">&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> str_.encode()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">b&#39;PK</span><span class="ch">\x03\x04</span><span class="st">&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_ <span class="op">=</span> <span class="st">b&#39;PK</span><span class="ch">\x03\x04</span><span class="st">&#39;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_.decode()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;PK</span><span class="ch">\x03\x04</span><span class="co">&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> str_ <span class="op">=</span> <span class="st">&quot;504B0304&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bytes</span>.fromhex(str_)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">b&#39;PK</span><span class="ch">\x03\x04</span><span class="st">&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_ <span class="op">=</span> <span class="st">b&#39;PK</span><span class="ch">\x03\x04</span><span class="st">&#39;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_.<span class="bu">hex</span>()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;504b0304&quot;</span></span></code></pre></div>
 <p>举例：以hex形式，读取文件和写入文件</p>
-<pre><code class="python">with open(&#39;1.txt&#39;, &#39;rb&#39;) as f:
-    str_ = f.read().hex()
-
-# str_ = &quot;504B0304&quot;
-str_1 = &quot;&quot;
-for i in range(0, len(str_), 2):
-    str_1 += str_[i:i+2]
-
-with open(&#39;2.txt&#39;, &#39;wb&#39;) as f:
-    f.write(bytes.fromhex(str_1))
-</code></pre>
-<h2 id="int和bytes"><a href="#int和bytes" class="headerlink" title="int和bytes"></a>int和bytes</h2><pre><code class="python">&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
-&gt;&gt;&gt; int.from_bytes(bytes_, &#39;big&#39;)
-112615676672893
-
-&gt;&gt;&gt; int_ = 112615676672893
-&gt;&gt;&gt; int_.to_bytes(10, &#39;big&#39;)
-b&#39;\x00\x00\x00\x00flag&#123;&#125;&#39;
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; from Crypto.Util.number import *
- 
-&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
-&gt;&gt;&gt; bytes_to_long(bytes_)
-112615676672893
-
-&gt;&gt;&gt; int_ = 112615676672893
-&gt;&gt;&gt; long_to_bytes(int_)
-b&#39;flag&#123;&#125;&#39;
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; bytes_ = b&quot;flag&#123;&#125;&quot;
-&gt;&gt;&gt; list(bytes_)
-[102, 108, 97, 103, 123, 125]
-
-&gt;&gt;&gt; list_ = [102, 108, 97, 103, 123, 125]
-&gt;&gt;&gt; bytes(list_)
-b&#39;flag&#123;&#125;&#39;
-</code></pre>
-<h2 id="进制和ascii"><a href="#进制和ascii" class="headerlink" title="进制和ascii"></a>进制和ascii</h2><pre><code class="python">&gt;&gt;&gt; 0b1100001
-97
-&gt;&gt;&gt; 0o12
-97
-&gt;&gt;&gt; 0xa
-97
-
-&gt;&gt;&gt; int(&quot;0b1100001&quot;, 2)
-97
-&gt;&gt;&gt; int(&quot;0o141&quot;, 8)
-97
-&gt;&gt;&gt; int(&quot;0x61&quot;, 16)
-97
-
-&gt;&gt;&gt; int(&quot;1100001&quot;, 2)
-97
-&gt;&gt;&gt; int(&quot;141&quot;, 8)
-97
-&gt;&gt;&gt; int(&quot;61&quot;, 16)
-97
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; bin(97)
-&#39;0b1100001&#39;
-&gt;&gt;&gt; oct(97)
-&#39;0o141&#39;
-&gt;&gt;&gt; hex(97)
-&#39;0x61&#39;
-
-&gt;&gt;&gt; bin(97)[2:]
-&#39;1100001&#39;
-&gt;&gt;&gt; oct(97)[2:]
-&#39;141&#39;
-&gt;&gt;&gt; hex(97)[2:]
-&#39;61&#39;
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; ord(&quot;a&quot;)
-97
-
-&gt;&gt;&gt; chr(97)
-&#39;a&#39;
-</code></pre>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;1.txt&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    str_ <span class="op">=</span> f.read().<span class="bu">hex</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># str_ = &quot;504B0304&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>str_1 <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(str_), <span class="dv">2</span>):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    str_1 <span class="op">+=</span> str_[i:i<span class="op">+</span><span class="dv">2</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;2.txt&#39;</span>, <span class="st">&#39;wb&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="bu">bytes</span>.fromhex(str_1))</span></code></pre></div>
+<h2 id="int和bytes">int和bytes</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_ <span class="op">=</span> <span class="st">b&quot;flag&#123;&#125;&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>.from_bytes(bytes_, <span class="st">&#39;big&#39;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dv">112615676672893</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> int_ <span class="op">=</span> <span class="dv">112615676672893</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> int_.to_bytes(<span class="dv">10</span>, <span class="st">&#39;big&#39;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">b&#39;</span><span class="ch">\x00\x00\x00\x00</span><span class="st">flag&#123;&#125;&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> Crypto.Util.number <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_ <span class="op">=</span> <span class="st">b&quot;flag&#123;&#125;&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_to_long(bytes_)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dv">112615676672893</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> int_ <span class="op">=</span> <span class="dv">112615676672893</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> long_to_bytes(int_)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">b&#39;flag&#123;&#125;&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> bytes_ <span class="op">=</span> <span class="st">b&quot;flag&#123;&#125;&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(bytes_)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">102</span>, <span class="dv">108</span>, <span class="dv">97</span>, <span class="dv">103</span>, <span class="dv">123</span>, <span class="dv">125</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> list_ <span class="op">=</span> [<span class="dv">102</span>, <span class="dv">108</span>, <span class="dv">97</span>, <span class="dv">103</span>, <span class="dv">123</span>, <span class="dv">125</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bytes</span>(list_)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">b&#39;flag&#123;&#125;&#39;</span></span></code></pre></div>
+<h2 id="进制和ascii">进制和ascii</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0b1100001</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0o12</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bn">0xa</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;0b1100001&quot;</span>, <span class="dv">2</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;0o141&quot;</span>, <span class="dv">8</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;0x61&quot;</span>, <span class="dv">16</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;1100001&quot;</span>, <span class="dv">2</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;141&quot;</span>, <span class="dv">8</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(<span class="st">&quot;61&quot;</span>, <span class="dv">16</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bin</span>(<span class="dv">97</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;0b1100001&#39;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">oct</span>(<span class="dv">97</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;0o141&#39;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">hex</span>(<span class="dv">97</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;0x61&#39;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">bin</span>(<span class="dv">97</span>)[<span class="dv">2</span>:]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;1100001&#39;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">oct</span>(<span class="dv">97</span>)[<span class="dv">2</span>:]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;141&#39;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">hex</span>(<span class="dv">97</span>)[<span class="dv">2</span>:]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;61&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">ord</span>(<span class="st">&quot;a&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dv">97</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">chr</span>(<span class="dv">97</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;a&#39;</span></span></code></pre></div>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>

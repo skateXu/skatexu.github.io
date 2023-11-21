@@ -147,7 +147,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(10)</small>
+                <small>(11)</small>
             
         </div>
     </li>
@@ -159,7 +159,7 @@
         <div data-rel="笔记">
             
             笔记
-            <small>(2)</small>
+            <small>(3)</small>
         </div>
         
     </li>
@@ -270,8 +270,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="10">
-<input type="hidden" id="yelog_site_word_count" value="6.3k">
+<input type="hidden" id="yelog_site_posts_number" value="11">
+<input type="hidden" id="yelog_site_word_count" value="6.4k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -356,6 +356,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 笔记 "
+           href="/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="RSA-给出hint">RSA-给出hint</span>
+            <span class="post-date" title="2023-11-21 11:06:27">2023/11/21</span>
+        </a>
         
         
         <a  class="全部文章 考研 高数 "
@@ -490,7 +499,7 @@
     </div>
     <div class="article-meta">
         
-        <span>字数:440</span>
+        <span>字数:436</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -525,85 +534,114 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/../img/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/image-20231113153404815.png" alt="image-20231113153404815"></p>
-<p>下面说的都是<strong>一次</strong>递归公式，其他的例如像Quadratic Map这种二次递归，不一定有通项公式，不能用矩阵快速幂实现快速运算，得老老实实用递归或者渐进表达式。</p>
-<h2 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>$a_n &#x3D; a_{n-1} + a_{n-2}$，其中 $a_0 &#x3D; 1$，$a_1 &#x3D; 1$</p>
-<h3 id="矩阵变换"><a href="#矩阵变换" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$\begin{bmatrix} a_n \\ a_{n-1} \end{bmatrix} &#x3D; \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix} \cdot \begin{bmatrix} a_{n-1} \\ a_{n-2} \end{bmatrix}$</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
-
-state = [1, 1]
-
-for i in range(1, 10**2+1):
-    y = state[i] + state[i-1]
-    state.append(y)
-
-M1 = matrix([
-    [1, 1],
-    [1, 0],
-])
-M2 = matrix([
-    [state[1]],
-    [state[0]],
-])
-
-state_ = (M1**(10**2) * M2)[0][0]
-print(state_ == state[-1])
-</code></pre>
-<h2 id="一阶线性递推式"><a href="#一阶线性递推式" class="headerlink" title="一阶线性递推式"></a>一阶线性递推式</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>$f_n \equiv a \times f_{n-1} + b \mod{p}$</p>
-<h3 id="矩阵变换-1"><a href="#矩阵变换-1" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$\begin{bmatrix} f_n \\ b \end{bmatrix} &#x3D; \begin{bmatrix} a &amp; 1 \\ 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \\ b \end{bmatrix}$</p>
-<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
-from Crypto.Util.number import getRandomInteger
-
-state = [getRandomInteger(256)]
-a = getRandomInteger(256)
-b = getRandomInteger(256)
-p = getRandomInteger(256)
-
-for i in range(10**2):  # 10**10000
-    y = (a * state[i] + b) % p
-    state.append(y)
-
-M1 = matrix(Zmod(p), [
-    [a, 1],
-    [0, 1],
-])
-M2 = matrix(Zmod(p), [
-    [state[0]],
-    [b],
-])
-
-state_ = (M1**(10**2) * M2)[0][0]
-print(state_ == state[-1])
-</code></pre>
-<h2 id="二阶线性递推式"><a href="#二阶线性递推式" class="headerlink" title="二阶线性递推式"></a>二阶线性递推式</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>$f_n \equiv a \times f_{n-1} + b \times f_{n-2} + c \mod{p}$</p>
-<h3 id="矩阵变换-2"><a href="#矩阵变换-2" class="headerlink" title="矩阵变换"></a>矩阵变换</h3><p>$\begin{bmatrix} f_n \\ f_{n-1} \\ c \end{bmatrix} &#x3D; \begin{bmatrix} a &amp; b &amp; 1 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \\ f_{n-2} \\ c \end{bmatrix}$</p>
-<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><pre><code class="python">from sage.all import *
-from Crypto.Util.number import getRandomInteger
-
-state = [getRandomInteger(256), getRandomInteger(256)]
-a = getRandomInteger(256)
-b = getRandomInteger(256)
-c = getRandomInteger(256)
-p = getRandomInteger(256)
-
-for i in range(1, 10**2+1):  # 10**10000
-    y = (a * state[i] + b * state[i-1] + c) % p
-    state.append(y)
-
-M1 = matrix(Zmod(p), [
-    [a, b, 1],
-    [1, 0, 0],
-    [0, 0, 1],
-])
-M2 = matrix(Zmod(p), [
-    [state[1]],
-    [state[0]],
-    [c],
-])
-
-state_ = (M1**(10**2) * M2)[0][0]
-print(state_ == state[-1])
-</code></pre>
+        <figure>
+<img
+src="../img/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/image-20231113153404815.png"
+alt="image-20231113153404815" />
+<figcaption aria-hidden="true">image-20231113153404815</figcaption>
+</figure>
+<p>下面说的都是<strong>一次</strong>递归公式，其他的例如像Quadratic
+Map这种二次递归，不一定有通项公式，不能用矩阵快速幂实现快速运算，得老老实实用递归或者渐进表达式。</p>
+<h2 id="斐波那契数列">斐波那契数列</h2>
+<h3 id="定义">定义</h3>
+<p><span class="math inline">\(a_n = a_{n-1} + a_{n-2}\)</span>，其中
+<span class="math inline">\(a_0 = 1\)</span>，<span
+class="math inline">\(a_1 = 1\)</span></p>
+<h3 id="矩阵变换">矩阵变换</h3>
+<p><span class="math inline">\(\begin{bmatrix} a_n \\\\ a_{n-1}
+\end{bmatrix} = \begin{bmatrix} 1 &amp; 1 \\\\ 1 &amp; 0 \end{bmatrix}
+\cdot \begin{bmatrix} a_{n-1} \\\\ a_{n-2} \end{bmatrix}\)</span></p>
+<h3 id="代码">代码</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> state[i] <span class="op">+</span> state[i<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    state.append(y)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>M1 <span class="op">=</span> matrix([</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>M2 <span class="op">=</span> matrix([</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    [state[<span class="dv">1</span>]],</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    [state[<span class="dv">0</span>]],</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>state_ <span class="op">=</span> (M1<span class="op">**</span>(<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> M2)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(state_ <span class="op">==</span> state[<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div>
+<h2 id="一阶线性递推式">一阶线性递推式</h2>
+<h3 id="定义-1">定义</h3>
+<p><span class="math inline">\(f_n \equiv a \times f_{n-1} + b
+\mod{p}\)</span></p>
+<h3 id="矩阵变换-1">矩阵变换</h3>
+<p><span class="math inline">\(\begin{bmatrix} f_n \\\\ b \end{bmatrix}
+= \begin{bmatrix} a &amp; 1 \\\\ 0 &amp; 1 \end{bmatrix} \cdot
+\begin{bmatrix} f_{n-1} \\\\ b \end{bmatrix}\)</span></p>
+<h3 id="代码-1">代码</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.number <span class="im">import</span> getRandomInteger</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [getRandomInteger(<span class="dv">256</span>)]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>):  <span class="co"># 10**10000</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (a <span class="op">*</span> state[i] <span class="op">+</span> b) <span class="op">%</span> p</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    state.append(y)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>M1 <span class="op">=</span> matrix(Zmod(p), [</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    [a, <span class="dv">1</span>],</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>M2 <span class="op">=</span> matrix(Zmod(p), [</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    [state[<span class="dv">0</span>]],</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    [b],</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>state_ <span class="op">=</span> (M1<span class="op">**</span>(<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> M2)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(state_ <span class="op">==</span> state[<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div>
+<h2 id="二阶线性递推式">二阶线性递推式</h2>
+<h3 id="定义-2">定义</h3>
+<p><span class="math inline">\(f_n \equiv a \times f_{n-1} + b \times
+f_{n-2} + c \mod{p}\)</span></p>
+<h3 id="矩阵变换-2">矩阵变换</h3>
+<p><span class="math inline">\(\begin{bmatrix} f_n \\\\ f_{n-1} \\\\ c
+\end{bmatrix} = \begin{bmatrix} a &amp; b &amp; 1 \\\\ 1 &amp; 0 &amp; 0
+\\\\ 0 &amp; 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \\\\
+f_{n-2} \\\\ c \end{bmatrix}\)</span></p>
+<h3 id="代码-2">代码</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.number <span class="im">import</span> getRandomInteger</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [getRandomInteger(<span class="dv">256</span>), getRandomInteger(<span class="dv">256</span>)]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> getRandomInteger(<span class="dv">256</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span>):  <span class="co"># 10**10000</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (a <span class="op">*</span> state[i] <span class="op">+</span> b <span class="op">*</span> state[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> c) <span class="op">%</span> p</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    state.append(y)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>M1 <span class="op">=</span> matrix(Zmod(p), [</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    [a, b, <span class="dv">1</span>],</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>M2 <span class="op">=</span> matrix(Zmod(p), [</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    [state[<span class="dv">1</span>]],</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    [state[<span class="dv">0</span>]],</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    [c],</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>state_ <span class="op">=</span> (M1<span class="op">**</span>(<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> M2)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(state_ <span class="op">==</span> state[<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -614,7 +652,7 @@ print(state_ == state[-1])
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>矩阵快速幂</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">440</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">436</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-13, 11:38:37</p>
     <p><span class="copy-title">最后更新:</span>2023-11-16, 13:09:21</p>
