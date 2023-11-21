@@ -548,8 +548,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="题目源码">题目源码</h2>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gmpy2 <span class="im">import</span> next_prime, invert <span class="im">as</span> inverse_mod</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gmpy2 <span class="im">import</span> next_prime, invert <span class="im">as</span> inverse_mod</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Cipher <span class="im">import</span> PKCS1_v1_5</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.PublicKey <span class="im">import</span> RSA</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> getrandbits</span>
@@ -610,10 +609,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <h3 id="mt19937-prng预测">MT19937 PRNG预测</h3>
 <p>观察choice，发现<code>choice=1</code>和<code>choice=2</code>好像并没有直接的关系，但是都用到了getrandbits函数，联想到MT19937
 PRNG预测</p>
-<p><a
-target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">mersenne-twister-predictor</a></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<p><a target="_blank" rel="noopener" href="https://github.com/kmyk/mersenne-twister-predictor">mersenne-twister-predictor</a></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mt19937predictor <span class="im">import</span> MT19937Predictor</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> MT19937Predictor()</span>
@@ -625,13 +622,11 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <p>题目一共有8次交互机会，当<code>choice=1</code>，pq都是<code>getrandbits(1024-32)</code>，d是<code>getrandbits(1024-32-32)</code>，所以前7轮可以获得<code>(992*2+960)*7=20608</code>bits，满足MT19937所需要的<code>624*32=19968</code>bits</p>
 <p>然后根据每一轮的N、e用连分数恢复p、q、d，就可以预测了</p>
 <h3 id="连分数">连分数</h3>
-<p>比赛的时候没找到题目对应的论文，只找到了<a
-target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA
+<p>比赛的时候没找到题目对应的论文，只找到了<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/221400#h3-4">X-NUCA
 weird</a>这个比较相似的，但是不会构造成题目<code>e=inverse_mod(d, (p*p-1)*(q*q-1))</code>的形式，论文提到这种形式可以找<code>e / (N^2-9/4*N+1)</code>的连分数</p>
 <p><strong>注意</strong>：题目没有输出每一轮p和q的顺序，所以需要爆破互换pq的，复现为了方便验证，手动加上一个signal值</p>
 <h2 id="本地复现">本地复现</h2>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Cipher <span class="im">import</span> PKCS1_v1_5</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.PublicKey <span class="im">import</span> RSA</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> random <span class="im">import</span> getrandbits</span>

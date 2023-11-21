@@ -494,7 +494,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-11-16 13:09:21'>2023-11-13 11:38</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-21 13:20:04'>2023-11-13 11:38</time>
         
     </div>
     <div class="article-meta">
@@ -535,9 +535,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <figure>
-<img
-src="../img/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/image-20231113153404815.png"
-alt="image-20231113153404815" />
+<img src="/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/image-20231113153404815.png" alt="image-20231113153404815">
 <figcaption aria-hidden="true">image-20231113153404815</figcaption>
 </figure>
 <p>下面说的都是<strong>一次</strong>递归公式，其他的例如像Quadratic
@@ -545,15 +543,13 @@ Map这种二次递归，不一定有通项公式，不能用矩阵快速幂实�
 <h2 id="斐波那契数列">斐波那契数列</h2>
 <h3 id="定义">定义</h3>
 <p><span class="math inline">\(a_n = a_{n-1} + a_{n-2}\)</span>，其中
-<span class="math inline">\(a_0 = 1\)</span>，<span
-class="math inline">\(a_1 = 1\)</span></p>
+<span class="math inline">\(a_0 = 1\)</span>，<span class="math inline">\(a_1 = 1\)</span></p>
 <h3 id="矩阵变换">矩阵变换</h3>
-<p><span class="math inline">\(\begin{bmatrix} a_n \\\\ a_{n-1}
-\end{bmatrix} = \begin{bmatrix} 1 &amp; 1 \\\\ 1 &amp; 0 \end{bmatrix}
-\cdot \begin{bmatrix} a_{n-1} \\\\ a_{n-2} \end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\begin{bmatrix} a_n \\ a_{n-1}
+\end{bmatrix} = \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
+\cdot \begin{bmatrix} a_{n-1} \\ a_{n-2} \end{bmatrix}\)</span></p>
 <h3 id="代码">代码</h3>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>]</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -577,12 +573,11 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <p><span class="math inline">\(f_n \equiv a \times f_{n-1} + b
 \mod{p}\)</span></p>
 <h3 id="矩阵变换-1">矩阵变换</h3>
-<p><span class="math inline">\(\begin{bmatrix} f_n \\\\ b \end{bmatrix}
-= \begin{bmatrix} a &amp; 1 \\\\ 0 &amp; 1 \end{bmatrix} \cdot
-\begin{bmatrix} f_{n-1} \\\\ b \end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\begin{bmatrix} f_n \\ b \end{bmatrix} =
+\begin{bmatrix} a &amp; 1 \\ 0 &amp; 1 \end{bmatrix} \cdot
+\begin{bmatrix} f_{n-1} \\ b \end{bmatrix}\)</span></p>
 <h3 id="代码-1">代码</h3>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.number <span class="im">import</span> getRandomInteger</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [getRandomInteger(<span class="dv">256</span>)]</span>
@@ -610,13 +605,12 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <p><span class="math inline">\(f_n \equiv a \times f_{n-1} + b \times
 f_{n-2} + c \mod{p}\)</span></p>
 <h3 id="矩阵变换-2">矩阵变换</h3>
-<p><span class="math inline">\(\begin{bmatrix} f_n \\\\ f_{n-1} \\\\ c
-\end{bmatrix} = \begin{bmatrix} a &amp; b &amp; 1 \\\\ 1 &amp; 0 &amp; 0
-\\\\ 0 &amp; 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \\\\
-f_{n-2} \\\\ c \end{bmatrix}\)</span></p>
+<p><span class="math inline">\(\begin{bmatrix} f_n \\ f_{n-1} \\ c
+\end{bmatrix} = \begin{bmatrix} a &amp; b &amp; 1 \\ 1 &amp; 0 &amp; 0
+\\ 0 &amp; 0 &amp; 1 \end{bmatrix} \cdot \begin{bmatrix} f_{n-1} \\
+f_{n-2} \\ c \end{bmatrix}\)</span></p>
 <h3 id="代码-2">代码</h3>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sage.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.number <span class="im">import</span> getRandomInteger</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> [getRandomInteger(<span class="dv">256</span>), getRandomInteger(<span class="dv">256</span>)]</span>
@@ -655,7 +649,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
     <p><span class="copy-title">字数:</span><span class="post-count">436</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-13, 11:38:37</p>
-    <p><span class="copy-title">最后更新:</span>2023-11-16, 13:09:21</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-21, 13:20:04</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/" title="矩阵快速幂">http://example.com/2023/11/13/%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
