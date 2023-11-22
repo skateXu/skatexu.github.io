@@ -507,12 +507,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-11-22 16:17:50'>2023-11-21 11:06</time>
+            发布时间 : <time class="date" title='最后更新: 2023-11-22 17:56:54'>2023-11-21 11:06</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:892</span>
+        <span>字数:899</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -531,7 +531,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%80%A7%E8%B4%A8%E5%92%8C%E8%BD%AC%E5%8C%96"><span class="toc-text">常用性质和转化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%AE%97%E5%92%8C%E6%B3%95%E5%88%99"><span class="toc-text">同余方程的基本运算和法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86"><span class="toc-text">欧拉定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86"><span class="toc-text">费马小定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#e%E5%92%8Ck"><span class="toc-text">e和k</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E5%9E%8B%E6%80%BB%E7%BB%93"><span class="toc-text">题型总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#leak-pq-qp-n"><span class="toc-text">\(leak &#x3D; (p^q + q^p)\
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%80%A7%E8%B4%A8%E5%92%8C%E8%BD%AC%E5%8C%96"><span class="toc-text">常用性质和转化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%BD%99%E5%BC%8F%E7%9A%84%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99"><span class="toc-text">同余式的运算法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86"><span class="toc-text">欧拉定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86"><span class="toc-text">费马小定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#e%E5%92%8Ck"><span class="toc-text">e和k</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E5%9E%8B%E6%80%BB%E7%BB%93"><span class="toc-text">题型总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#leak-pq-qp-n"><span class="toc-text">\(leak &#x3D; (p^q + q^p)\
 \%\ n\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leak-n-p-q---1-%E5%85%B6%E4%B8%AD-p-q"><span class="toc-text">\(leak &#x3D; (n +
 p)\ \%\ (q - 1),\ 其中\ p &gt; q\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leak-d-p-q"><span class="toc-text">\(leak &#x3D; d + p +
 q\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leak_1-p-qe-n-leak_2-p-eq-n"><span class="toc-text">\(leak_1
@@ -555,7 +555,7 @@ q\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#l
       
         <p>这类问题比较好识别，一般会给一个leak，它和p、q之间有直接关系，解题的核心就是<strong>数学推导</strong>。</p>
 <h2 id="常用性质和转化">常用性质和转化</h2>
-<h3 id="同余方程的基本运算和法则">同余方程的基本运算和法则</h3>
+<h3 id="同余式的运算法则">同余式的运算法则</h3>
 <p><span class="math inline">\(\begin{cases} a \pm b \equiv a\ \%\ b \pm
 b\ \%\ n \mod{n} \\ a \times b \equiv a\ \%\ b \times b\ \%\ n \mod{n}
 \\ a^b \equiv (a\ \%\ n)^b \mod{n} \end{cases}\)</span></p>
@@ -574,7 +574,8 @@ a^{\phi{n}} \equiv 1 \mod{n}\)</span></p>
 <h3 id="费马小定理">费马小定理</h3>
 <p>欧拉定理的一种特殊情况</p>
 <p><span class="math inline">\(\begin{cases} p是素数 \\ \gcd(a,\ p) = 1
-\end{cases} \Longrightarrow a^p \equiv a \mod{p}\)</span></p>
+\end{cases} \Longrightarrow \\ \begin{cases} a^{p-1} \equiv 1 \mod{p} \\
+a^p \equiv a \mod{p} \end{cases}\)</span></p>
 <h3 id="e和k">e和k</h3>
 <p>设d是e模<span class="math inline">\(\phi{n}\)</span>的逆元，有 <span class="math inline">\(d &lt; \phi{n}\)</span>，又因为 <span class="math inline">\(ed = 1 + k \phi{n}\)</span>，所以 <span class="math inline">\(0 &lt; k &lt; e\)</span></p>
 <p>有时候需要爆破k的大小</p>
@@ -665,10 +666,10 @@ kq + k_2 n = kq + k_2 pq = (k + k_2 p)q = k_3 q \\ \because k是随机数 \\
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>RSA-给出hint</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">892</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">899</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-21, 11:06:27</p>
-    <p><span class="copy-title">最后更新:</span>2023-11-22, 16:17:50</p>
+    <p><span class="copy-title">最后更新:</span>2023-11-22, 17:56:54</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/" title="RSA-给出hint">http://example.com/2023/11/21/RSA-%E7%BB%99%E5%87%BAhint/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
