@@ -525,12 +525,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-11-22 17:23:24'>2023-11-22 16:19</time>
+            发布时间 : <time class="date" title='最后更新: 2023-12-15 14:14:58'>2023-11-22 16:19</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:520</span>
+        <span>字数:513</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -549,7 +549,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#one"><span class="toc-text">one</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#two"><span class="toc-text">two</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%BA%90%E7%A0%81"><span class="toc-text">题目源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#two"><span class="toc-text">two</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#one"><span class="toc-text">one</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -614,7 +614,7 @@
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">pri= 424184707992085368727036634979681060339188016631126395371395132791009626692092220877797321952063158959159298372653275672949543326347146732580465753892335912633332743258010037527036987474957662424735475674152462914082526658466925646224968182493094690460023505421720259663381122409147914948696061450626153526908753546708693503710352787787701648821693599138777500334149879355898444355846028142814267511986218166066642222930494985736426837825122392760739011897554697</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">&#39;&#39;&#39;</span></span></code></pre></div>
 <h2 id="分析">分析</h2>
-<h3 id="one">one</h3>
+<h3 id="two">two</h3>
 <p>为了方便分析，先做以下定义</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> p<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> q <span class="op">*</span> r</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> p <span class="op">*</span> (p<span class="op">-</span><span class="dv">1</span>) <span class="op">*</span> (q<span class="op">-</span><span class="dv">1</span>) <span class="op">*</span> (r<span class="op">-</span><span class="dv">1</span>)</span>
@@ -627,7 +627,7 @@ k(p-1)(q-1)(r-1) \\ 2^{nd} = 2 \cdot 2^{k(p-1)(q-1)(r-1)} \\
 两边同时模n\_ \\ 2^{nd} \equiv 2 \cdot 2^{k(p-1)(q-1)(r-1)} \equiv 2
 \mod{n\_} \\ 2^{nd} - 2 = k_1 n\_ \\ n\_ = \gcd(k_1 n\_,\ n) \\ m = c^d\
 \%\ {n\_}\)</span></p>
-<h3 id="two">two</h3>
+<h3 id="one">one</h3>
 <p>构造消去e</p>
 <p><span class="math inline">\(\because \begin{cases} n = a_0^2 + e
 b_0^2 \\ n = a_1^2 + e b_1^2 \end{cases} \\ n b_0^2 - n b_1^2 = (a_1^2 +
@@ -638,32 +638,29 @@ b_1)(a_1 b_0 - a_0 b_1) \\ p = \gcd(n,\ a_1 b_0 + a_0 b_1) \\ q =
 <h2 id="解题">解题</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.number <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Crypto.Util.Padding <span class="im">import</span> pad,unpad</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gmpy2</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>n1<span class="op">=</span> <span class="dv">87665217778729524993118310155129480311708534438704150676980835344891979982717119161254489670350577173938239682286759779547789055360697960379769693294306641200724257991678505629369338313581657539655057636732714452287023658150014746541718058750871927050204352584824130972892779877896415568548748364583880371427</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>a0<span class="op">=</span> <span class="dv">9362970563807702423162361787386216886594085863490420184497563324865248429693287404341206766515622648778272030443641712923250846610046357375553046092690266</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>a1<span class="op">=</span> <span class="dv">9362970563807702423162361745963275441706212437133735476965289880825874017106479792816846422940594285630367772490647779230476318907092613021181772527068514</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>b0<span class="op">=</span> <span class="dv">74836747076024432741470938222753940689278814091833170112470104078475118700897724833941621360216319460657128947837095907483</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>b1<span class="op">=</span> <span class="dv">93520964011413593176393772179429258741894666938448164504029535235899813670669478849381259720656022408302270582527720184427</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>c2<span class="op">=</span> <span class="dv">7090659117351297531755883438960933877263181849815568437232708639999747137583085680350909771730266998763362206865224473283130982570816918537377058225538656521223617210560656370841094169187300346437355127376920626133248983100115455529533265136725274741407727211587363755394889303944789720637515498330115070515942678821608630620272575086220037432383957991049220528177053370450234486390431027269543481157974773863005279984438957464388749795275109730696430700744950555993640720758137888948464005039907816169108829675809911658280616090368129767282407708640291466242813209343944276906740181222776418701978734705056220412984</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>pub<span class="op">=</span> <span class="dv">15393634704241437811571407047965218207529278849238950329420499882359515149154462592674433680412129087082275102567406550543503710118161775213536183656910892279726520148202227312448507629264239427121015706092403872586978266402316447553116208411724407465368711586887621447872002364407809592953543797319646692321612541334341183378900324146713189121105760280994702695266049904020810024990537652609099294535255399210219454610583930829883737909993183476961897889084229322415995483397484414924734020539093114397393070394929656598174957126771887906087335882580049097369036955153036983424389092042285637185882327630117320615769</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>pri<span class="op">=</span> <span class="dv">424184707992085368727036634979681060339188016631126395371395132791009626692092220877797321952063158959159298372653275672949543326347146732580465753892335912633332743258010037527036987474957662424735475674152462914082526658466925646224968182493094690460023505421720259663381122409147914948696061450626153526908753546708693503710352787787701648821693599138777500334149879355898444355846028142814267511986218166066642222930494985736426837825122392760739011897554697</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># two</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> pub</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> pri</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>n_ <span class="op">=</span> GCD(<span class="bu">pow</span>(<span class="dv">2</span>, n<span class="op">*</span>d, n) <span class="op">-</span> <span class="dv">2</span>, n)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>c1 <span class="op">=</span> <span class="bu">pow</span>(c2, d, n_)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>c1 <span class="op">=</span> bytes_to_long(unpad(long_to_bytes(c1), <span class="dv">190</span>))</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># one</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> GCD(n1, a1<span class="op">*</span>b0<span class="op">+</span>a0<span class="op">*</span>b1)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> n1 <span class="op">//</span> p</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> (n1 <span class="op">-</span> a0<span class="op">**</span><span class="dv">2</span>) <span class="op">//</span> b0<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> gmpy2.invert(e, (p<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>(q<span class="op">-</span><span class="dv">1</span>))</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="bu">pow</span>(c1, d, n1)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(long_to_bytes(m))</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># b&#39;flag&#123;1a100d2c0dab19c4430e7d73762b3423&#125;&#39;</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>n1<span class="op">=</span> <span class="dv">87665217778729524993118310155129480311708534438704150676980835344891979982717119161254489670350577173938239682286759779547789055360697960379769693294306641200724257991678505629369338313581657539655057636732714452287023658150014746541718058750871927050204352584824130972892779877896415568548748364583880371427</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>a0<span class="op">=</span> <span class="dv">9362970563807702423162361787386216886594085863490420184497563324865248429693287404341206766515622648778272030443641712923250846610046357375553046092690266</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>a1<span class="op">=</span> <span class="dv">9362970563807702423162361745963275441706212437133735476965289880825874017106479792816846422940594285630367772490647779230476318907092613021181772527068514</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>b0<span class="op">=</span> <span class="dv">74836747076024432741470938222753940689278814091833170112470104078475118700897724833941621360216319460657128947837095907483</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>b1<span class="op">=</span> <span class="dv">93520964011413593176393772179429258741894666938448164504029535235899813670669478849381259720656022408302270582527720184427</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>c2<span class="op">=</span> <span class="dv">7090659117351297531755883438960933877263181849815568437232708639999747137583085680350909771730266998763362206865224473283130982570816918537377058225538656521223617210560656370841094169187300346437355127376920626133248983100115455529533265136725274741407727211587363755394889303944789720637515498330115070515942678821608630620272575086220037432383957991049220528177053370450234486390431027269543481157974773863005279984438957464388749795275109730696430700744950555993640720758137888948464005039907816169108829675809911658280616090368129767282407708640291466242813209343944276906740181222776418701978734705056220412984</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>pub<span class="op">=</span> <span class="dv">15393634704241437811571407047965218207529278849238950329420499882359515149154462592674433680412129087082275102567406550543503710118161775213536183656910892279726520148202227312448507629264239427121015706092403872586978266402316447553116208411724407465368711586887621447872002364407809592953543797319646692321612541334341183378900324146713189121105760280994702695266049904020810024990537652609099294535255399210219454610583930829883737909993183476961897889084229322415995483397484414924734020539093114397393070394929656598174957126771887906087335882580049097369036955153036983424389092042285637185882327630117320615769</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>pri<span class="op">=</span> <span class="dv">424184707992085368727036634979681060339188016631126395371395132791009626692092220877797321952063158959159298372653275672949543326347146732580465753892335912633332743258010037527036987474957662424735475674152462914082526658466925646224968182493094690460023505421720259663381122409147914948696061450626153526908753546708693503710352787787701648821693599138777500334149879355898444355846028142814267511986218166066642222930494985736426837825122392760739011897554697</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># two</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> pub</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> pri</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>n_ <span class="op">=</span> GCD(<span class="bu">pow</span>(<span class="dv">2</span>, n<span class="op">*</span>d, n) <span class="op">-</span> <span class="dv">2</span>, n)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>c1 <span class="op">=</span> bytes_to_long(unpad(long_to_bytes(<span class="bu">pow</span>(c2, d, n_)), <span class="dv">190</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># one</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> GCD(n1, a1<span class="op">*</span>b0<span class="op">+</span>a0<span class="op">*</span>b1)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> n1 <span class="op">//</span> p</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> (n1 <span class="op">-</span> a0<span class="op">**</span><span class="dv">2</span>) <span class="op">//</span> b0<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> inverse(e, (p<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>(q<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(long_to_bytes(<span class="bu">pow</span>(c1, d, n1)))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># b&#39;flag&#123;1a100d2c0dab19c4430e7d73762b3423&#125;&#39;</span></span></code></pre></div>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -674,10 +671,10 @@ b_1)(a_1 b_0 - a_0 b_1) \\ p = \gcd(n,\ a_1 b_0 + a_0 b_1) \\ q =
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>2023 上海大学生网络安全赛 Twice</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">520</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">513</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-22, 16:19:00</p>
-    <p><span class="copy-title">最后更新:</span>2023-11-22, 17:23:24</p>
+    <p><span class="copy-title">最后更新:</span>2023-12-15, 14:14:58</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/22/2023-%E4%B8%8A%E6%B5%B7%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%B5%9B-Twice/" title="2023 上海大学生网络安全赛 Twice">http://example.com/2023/11/22/2023-%E4%B8%8A%E6%B5%B7%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%B5%9B-Twice/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
