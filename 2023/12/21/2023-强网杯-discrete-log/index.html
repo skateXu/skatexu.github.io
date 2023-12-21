@@ -544,7 +544,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-12-21 22:44:01'>2023-12-21 16:08</time>
+            发布时间 : <time class="date" title='最后更新: 2023-12-21 23:19:40'>2023-12-21 16:08</time>
         
     </div>
     <div class="article-meta">
@@ -575,8 +575,8 @@
     .left-col .switch-area {
         display: none;
     }
-    .toc-level-3 i,
-    .toc-level-3 ol {
+    .toc-level-6 i,
+    .toc-level-6 ol {
         display: none !important;
     }
 </style>
@@ -611,9 +611,9 @@
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="dv">105956730578629949992232286714779776923846577007389446302378719229216496867835280661431342821159505656015790792811649783966417989318584221840008436316642333656736724414761508478750342102083967959048112859470526771487533503436337125728018422740023680376681927932966058904269005466550073181194896860353202252854</span></span></code></pre></div>
 <h2 id="分析">分析</h2>
 <p>离散对数问题，flag填充到128长度，但是flag长度未知</p>
-<p>比赛的时候以为给的假flag是flag的高位，赛后得知flag里面的长度是12，可能是根据爆破难度来推测长度的，因为用到了bsgs法，相当于爆6位的[0-9a-f]，再长一点就很难爆破了</p>
+<p>比赛的时候以为给的假flag是flag的高位，赛后得知flag里面的长度是12，可能是根据爆破难度来<strong>推测长度</strong>的，因为用到了bsgs法，相当于<strong>爆6位的[0-9a-f]</strong>，再长一点就很难爆破了</p>
 <p>得知flag长度后，我们把同余式转化成 <span class="math inline">\(c
-\equiv g^x \mod{p}\)</span> 的格式，方便最后进行bsgs</p>
+\equiv g^{flag} \mod{p}\)</span> 的形式，方便最后进行bsgs</p>
 <h3 id="同余式转化">同余式转化</h3>
 <h4 id="第一步">第一步</h4>
 <p>将flag头尾和padding先移到c那边，得到c1，因为<code>padding+'&#125;'</code>的长度是111，此时有
@@ -633,8 +633,8 @@
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">111</span><span class="op">*</span><span class="dv">8</span>):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    c1 <span class="op">=</span> <span class="bu">pow</span>(c1, (p<span class="op">+</span><span class="dv">1</span>)<span class="op">//</span><span class="dv">4</span>, p)</span></code></pre></div>
 <p>这样，就有 <span class="math inline">\(c_1 \equiv g^{flag}
-\mod{p}\)</span>，也就是说后面的步骤直接用<code>g=5</code></p>
-<p>但是经过尝试，发现用g和g1的爆破速度基本一样，所以不如直接用g1</p>
+\mod{p}\)</span>，也就是说后面的步骤直接用<code>g = 5</code></p>
+<p>但是经过尝试，发现用g和用g1的爆破速度基本一样，所以不如<strong>直接用g1</strong></p>
 <h3 id="bsgs">BSGS</h3>
 <p>根据大步小步法，因为flag长度是12，令 <span class="math inline">\(flag
 = im + j\)</span>，其中 <span class="math inline">\(m = 2^{6 \times
@@ -643,16 +643,16 @@
 + j} \mod{p}\)</span>，有 <span class="math inline">\(c_1 (g_1^{-m})^i
 \equiv g_1^j \mod{p}\)</span></p>
 <h4 id="大步">大步</h4>
-<p>左边先乘c1，然后每次乘上n次的 <span class="math inline">\(g_1^{-m}\)</span>（这里有n次是因为flag的字符只有[0-9a-f]，遍历的时候存在“跳跃”，所以n不一定为1）</p>
-<p>遍历完所有结果并存进dic字典中</p>
+<p>左边先乘c1，然后每次乘上<strong>n次</strong>的 <span class="math inline">\(g_1^{-m}\)</span>（这里写n次是因为flag的字符只有[0-9a-f]，遍历的时候存在“跳跃”，所以<strong>n不一定为1</strong>）</p>
+<p>遍历完所有结果存进字典dic中</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g1m_inv <span class="op">=</span> <span class="bu">pow</span>(g1, <span class="op">-</span><span class="dv">2</span><span class="op">**</span>(<span class="dv">6</span><span class="op">*</span><span class="dv">8</span>), p)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>left <span class="op">=</span> c1</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> tqdm(<span class="bu">range</span>(<span class="bu">len</span>(flag))):</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    left <span class="op">=</span> left <span class="op">*</span> <span class="bu">pow</span>(g1m_inv, bflag[i<span class="op">+</span><span class="dv">1</span>] <span class="op">-</span> bflag[i], p) <span class="op">%</span> p</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    dic[left] <span class="op">=</span> i</span></code></pre></div>
 <h4 id="小步">小步</h4>
-<p>右边每次乘上n次的 <span class="math inline">\(g_1\)</span></p>
-<p>每次乘完得到的值判断是否在dic中，如果存在，即<code>left=right</code>，说明找到了正确的i、j</p>
+<p>右边每次乘上<strong>n次</strong>的 <span class="math inline">\(g_1\)</span></p>
+<p>每次乘完得到的值判断是否在dic中，如果存在，即<code>left = right</code>，说明找到了正确的i、j</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> tqdm(<span class="bu">range</span>(<span class="bu">len</span>(flag))):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    right <span class="op">=</span> right <span class="op">*</span> <span class="bu">pow</span>(g1, bflag[j<span class="op">+</span><span class="dv">1</span>] <span class="op">-</span> bflag[j], p) <span class="op">%</span> p</span>
@@ -711,7 +711,7 @@
     <p><span class="copy-title">字数:</span><span class="post-count">862</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-12-21, 16:08:04</p>
-    <p><span class="copy-title">最后更新:</span>2023-12-21, 22:44:01</p>
+    <p><span class="copy-title">最后更新:</span>2023-12-21, 23:19:40</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/12/21/2023-%E5%BC%BA%E7%BD%91%E6%9D%AF-discrete-log/" title="2023 强网杯 discrete_log">http://example.com/2023/12/21/2023-%E5%BC%BA%E7%BD%91%E6%9D%AF-discrete-log/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
