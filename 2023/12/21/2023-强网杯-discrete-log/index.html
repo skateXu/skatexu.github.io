@@ -544,7 +544,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-12-21 23:19:40'>2023-12-21 16:08</time>
+            发布时间 : <time class="date" title='最后更新: 2023-12-21 23:22:26'>2023-12-21 16:08</time>
         
     </div>
     <div class="article-meta">
@@ -643,7 +643,7 @@
 + j} \mod{p}\)</span>，有 <span class="math inline">\(c_1 (g_1^{-m})^i
 \equiv g_1^j \mod{p}\)</span></p>
 <h4 id="大步">大步</h4>
-<p>左边先乘c1，然后每次乘上<strong>n次</strong>的 <span class="math inline">\(g_1^{-m}\)</span>（这里写n次是因为flag的字符只有[0-9a-f]，遍历的时候存在“跳跃”，所以<strong>n不一定为1</strong>）</p>
+<p>左边先乘c1，然后每次乘上<strong>n次</strong>的<span class="math inline">\(g_1^{-m}\)</span>（这里写n次是因为flag的字符只有[0-9a-f]，遍历的时候存在“跳跃”，所以<strong>n不一定为1</strong>）</p>
 <p>遍历完所有结果存进字典dic中</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g1m_inv <span class="op">=</span> <span class="bu">pow</span>(g1, <span class="op">-</span><span class="dv">2</span><span class="op">**</span>(<span class="dv">6</span><span class="op">*</span><span class="dv">8</span>), p)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>left <span class="op">=</span> c1</span>
@@ -651,7 +651,7 @@
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    left <span class="op">=</span> left <span class="op">*</span> <span class="bu">pow</span>(g1m_inv, bflag[i<span class="op">+</span><span class="dv">1</span>] <span class="op">-</span> bflag[i], p) <span class="op">%</span> p</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    dic[left] <span class="op">=</span> i</span></code></pre></div>
 <h4 id="小步">小步</h4>
-<p>右边每次乘上<strong>n次</strong>的 <span class="math inline">\(g_1\)</span></p>
+<p>右边每次乘上<strong>n次</strong>的<span class="math inline">\(g_1\)</span></p>
 <p>每次乘完得到的值判断是否在dic中，如果存在，即<code>left = right</code>，说明找到了正确的i、j</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>right <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> tqdm(<span class="bu">range</span>(<span class="bu">len</span>(flag))):</span>
@@ -711,7 +711,7 @@
     <p><span class="copy-title">字数:</span><span class="post-count">862</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-12-21, 16:08:04</p>
-    <p><span class="copy-title">最后更新:</span>2023-12-21, 23:19:40</p>
+    <p><span class="copy-title">最后更新:</span>2023-12-21, 23:22:26</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/12/21/2023-%E5%BC%BA%E7%BD%91%E6%9D%AF-discrete-log/" title="2023 强网杯 discrete_log">http://example.com/2023/12/21/2023-%E5%BC%BA%E7%BD%91%E6%9D%AF-discrete-log/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
