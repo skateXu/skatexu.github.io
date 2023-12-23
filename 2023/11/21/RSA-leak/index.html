@@ -271,7 +271,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="14">
-<input type="hidden" id="yelog_site_word_count" value="9.6k">
+<input type="hidden" id="yelog_site_word_count" value="9.7k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -533,12 +533,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-11-29 23:06:22'>2023-11-21 11:06</time>
+            发布时间 : <time class="date" title='最后更新: 2023-12-24 02:34:26'>2023-11-21 11:06</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:1k</span>
+        <span>字数:1.2k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -564,7 +564,8 @@ q\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#l
 &#x3D; (p + q)^e\ \%\ n,\ leak_2 &#x3D; (p + e)^q\ \%\ n\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leak_1-pe---qe-n-leak_2-p---qe-n"><span class="toc-text">\(leak_1 &#x3D; (p^e - q^e)\ \%\ n,\ leak_2 &#x3D; (p - q)^e\
 \%\ n\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leak-2023q-231103p-n"><span class="toc-text">\(leak &#x3D; (2023q
 + 231103)^p\ \%\ n\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c_1-mp-n-c_2-mq-n"><span class="toc-text">\(c_1 &#x3D; m^p\ \%\
-n,\ c_2 &#x3D; m^q\ \%\ n\)</span></a></li></ol></li></ol>
+n,\ c_2 &#x3D; m^q\ \%\ n\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#p-1-inversep-q-q-1-inverseq-p"><span class="toc-text">\(p^{-1} &#x3D; inverse(p,\ q),\ q^{-1} &#x3D; inverse(q,\
+p)\)</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -623,20 +624,24 @@ a^{p-1} \equiv 1 \mod{p} \\ a^p \equiv a \mod{p}
 \end{cases} \\ 解二 \begin{cases} k_{1} = k_{3}p+1 \\ k_{2} = k_{3}q + 1
 \end{cases} \\ \because leak &lt; n \\ \therefore 解二不成立 \\ 综上得\
 leak = p + q\)</span></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> var(<span class="st">&#39;p, q&#39;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>seq1 <span class="op">=</span> p <span class="op">+</span> q <span class="op">-</span> leak</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>seq2 <span class="op">=</span> p <span class="op">*</span> q <span class="op">-</span> n</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solve([seq1,seq2], [p,q]))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> var(<span class="st">&#39;p q&#39;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>seq <span class="op">=</span> [</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    leak <span class="op">==</span> p <span class="op">+</span> q,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">==</span> p <span class="op">*</span> q</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solve(seq, p, q))</span></code></pre></div>
 <h3 id="leak-n-p-q---1-其中-p-q"><span class="math inline">\(leak = (n +
 p)\ \%\ (q - 1),\ 其中\ p &gt; q\)</span></h3>
 <p><span class="math inline">\(leak \equiv n + p \equiv pq + p \equiv 2p
 \mod{q-1} \\ leak = 2p + k(p - 1) \\ \because \begin{cases} 0 &lt; leak
 &lt; p - 1 \\ p &gt; q \end{cases} \\ \therefore k = -2 \\ 综上得\ leak
 = 2(p - q + 1)\)</span></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> var(<span class="st">&#39;p, q&#39;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>seq1 <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> (p <span class="op">-</span> q <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> leak</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>seq2 <span class="op">=</span> p <span class="op">*</span> q <span class="op">-</span> n</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solve([seq1,seq2], [p,q]))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> var(<span class="st">&#39;p q&#39;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>seq <span class="op">=</span> [</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    leak <span class="op">==</span> <span class="dv">2</span> <span class="op">*</span> (p <span class="op">-</span> q <span class="op">+</span> <span class="dv">1</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">==</span> p <span class="op">*</span> q</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solve(seq, p, q))</span></code></pre></div>
 <h3 id="leak-d-p-q"><span class="math inline">\(leak = d + p +
 q\)</span></h3>
 <p><span class="math inline">\(\because \begin{cases} \phi{n} = n - (p +
@@ -701,6 +706,20 @@ n,\ c_2 = m^q\ \%\ n\)</span></h3>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> <span class="bu">int</span>(res[<span class="dv">0</span>])</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(long_to_bytes(m))</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span></code></pre></div>
+<h3 id="p-1-inversep-q-q-1-inverseq-p"><span class="math inline">\(p^{-1} = inverse(p,\ q),\ q^{-1} = inverse(q,\
+p)\)</span></h3>
+<p>对于p和q，用扩展欧几里得可以求出整数s和t使得 <span class="math inline">\(p \cdot s + q \cdot t = \gcd(p,\ q) =
+1\)</span>，其中一正一负</p>
+<p>假设 <span class="math inline">\(s &gt; 0\)</span>，<span class="math inline">\(t &lt; 0\)</span>，则 <span class="math inline">\(\begin{cases} p^{-1} = s \\ q^{-1} = t\ \%\ p = t
++ p \end{cases}\)</span></p>
+<p><span class="math inline">\(ps + qt = 1 \\ pp^{-1} + q(q^{-1} - p) =
+1 \\ pp^{-1} + qq^{-1} - n = 1\)</span></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> var(<span class="st">&#39;p q&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>seq <span class="op">=</span> [</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">==</span> p <span class="op">*</span> q,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    p <span class="op">*</span> inv_p <span class="op">+</span> q <span class="op">*</span> inv_q <span class="op">==</span> <span class="dv">1</span> <span class="op">+</span> n</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solve(seq, p, q))</span></code></pre></div>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以邮件至 948751774@qq.com </span>
@@ -711,10 +730,10 @@ n,\ c_2 = m^q\ \%\ n\)</span></h3>
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>RSA-leak</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">1k</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">1.2k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-21, 11:06:27</p>
-    <p><span class="copy-title">最后更新:</span>2023-11-29, 23:06:22</p>
+    <p><span class="copy-title">最后更新:</span>2023-12-24, 02:34:26</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/21/RSA-leak/" title="RSA-leak">http://example.com/2023/11/21/RSA-leak/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
