@@ -147,7 +147,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(15)</small>
+                <small>(16)</small>
             
         </div>
     </li>
@@ -250,6 +250,21 @@
             
         
     
+        
+            
+                
+    <li>
+        <div data-rel="eg">
+            
+            eg
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -270,7 +285,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="15">
+<input type="hidden" id="yelog_site_posts_number" value="16">
 <input type="hidden" id="yelog_site_word_count" value="12.3k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -351,6 +366,10 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>eg</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>HNP</a>
             </li>
         
@@ -376,6 +395,15 @@
     </div>
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 eg "
+           href="/2024/02/02/2024-SAINTSEC%E6%8B%9B%E6%96%B0%E8%B5%9B-babyXor/"
+           data-tag="eg"
+           data-author="" >
+            <span class="post-title" title="2024 SAINTSEC招新赛 babyXor">2024 SAINTSEC招新赛 babyXor</span>
+            <span class="post-date" title="2024-02-02 17:38:16">2024/02/02</span>
+        </a>
         
         
         <a  class="全部文章 题目 2023 "
@@ -550,7 +578,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2024-02-02 17:01:55'>2023-11-30 18:17</time>
+            发布时间 : <time class="date" title='最后更新: 2024-02-02 17:49:26'>2023-11-30 18:17</time>
         
     </div>
     <div class="article-meta">
@@ -809,7 +837,7 @@ q) &gt;&gt; 100\)</span></h2>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;n = </span><span class="sc">&#123;</span>n<span class="sc">&#125;</span><span class="ss">&quot;</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;leak = </span><span class="sc">&#123;</span>leak<span class="sc">&#125;</span><span class="ss">&quot;</span>)</span></code></pre></div>
 <h3 id="分析-5">分析</h3>
-<p>因为只泄露了低位，采用从低到高的方法，但是q有偏移，需要爆破q的低8位，同时<code>pq_low_xor</code>函数的逻辑也有所改变</p>
+<p>因为只泄露了低位，采用从低到高的方法，但是q有偏移，需要爆破q的低8位，同时<code>pq_low_xor</code>函数也要改一改剪枝条件</p>
 <h3 id="解题-4">解题</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pq_low_xor(p<span class="op">=</span><span class="st">&quot;&quot;</span>, q<span class="op">=</span><span class="st">&quot;&quot;</span>):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    lp, lq <span class="op">=</span> <span class="bu">len</span>(p), <span class="bu">len</span>(q)</span>
@@ -867,7 +895,7 @@ q) &gt;&gt; 100\)</span></h2>
     <p><span class="copy-title">字数:</span><span class="post-count">1.4k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-30, 18:17:44</p>
-    <p><span class="copy-title">最后更新:</span>2024-02-02, 17:01:55</p>
+    <p><span class="copy-title">最后更新:</span>2024-02-02, 17:49:26</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/30/RSA-p-q/" title="RSA-p^q">http://example.com/2023/11/30/RSA-p-q/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
