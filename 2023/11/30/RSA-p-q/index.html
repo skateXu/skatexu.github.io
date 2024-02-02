@@ -574,7 +574,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2024-02-02 18:27:47'>2023-11-30 18:17</time>
+            发布时间 : <time class="date" title='最后更新: 2024-02-02 22:18:36'>2023-11-30 18:17</time>
         
     </div>
     <div class="article-meta">
@@ -803,7 +803,7 @@ q) &gt;&gt; 100\)</span></h2>
 <p>q有偏移，并且删去了p的高8位，所以需要爆破这8位，然后用coppersmith恢复低位</p>
 <h3 id="解题-3">解题</h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>leak <span class="op">=</span> leak <span class="op">&lt;&lt;</span> <span class="dv">100</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>leak_bits <span class="op">=</span> <span class="dv">412</span><span class="op">+</span><span class="dv">8</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>leak_bits <span class="op">=</span> <span class="dv">412</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span><span class="op">**</span><span class="dv">7</span>, <span class="dv">2</span><span class="op">**</span><span class="dv">8</span>):  <span class="co"># 爆破 p 的高位</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    p_high_8 <span class="op">=</span> <span class="bu">bin</span>(i)[<span class="dv">2</span>:]</span>
@@ -892,7 +892,7 @@ q) &gt;&gt; 100\)</span></h2>
     <p><span class="copy-title">字数:</span><span class="post-count">1.4k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-30, 18:17:44</p>
-    <p><span class="copy-title">最后更新:</span>2024-02-02, 18:27:47</p>
+    <p><span class="copy-title">最后更新:</span>2024-02-02, 22:18:36</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/30/RSA-p-q/" title="RSA-p^q">http://example.com/2023/11/30/RSA-p-q/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
