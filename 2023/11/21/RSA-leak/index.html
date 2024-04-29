@@ -578,12 +578,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-12-24 13:13:05'>2023-11-21 11:06</time>
+            发布时间 : <time class="date" title='最后更新: 2024-04-29 16:34:44'>2023-11-21 11:06</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:1.1k</span>
+        <span>字数:1.2k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -691,7 +691,7 @@ p)\ \%\ (q - 1),\ 其中\ p &gt; q\)</span></h3>
 q\)</span></h3>
 <p><span class="math inline">\(\because \begin{cases} \phi{n} = n - (p +
 q) + 1 \\ h = d + (p + q) \\ ed = 1 + k \phi{n} \end{cases} \\ 联立得\
-\frac{ed - 1}{k} + h = n + d + 1 \\ ed - 1 = k(n + 1 - h) + kd \\ (e -
+\dfrac{ed - 1}{k} + h = n + d + 1 \\ ed - 1 = k(n + 1 - h) + kd \\ (e -
 k)d = k(n + 1 - h) + 1 \\ [k(n + 1 - h) + 1]\ \%\ (e - k) = 0 \\ 遍历\
 k\ 即可\)</span></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, e):</span>
@@ -699,6 +699,8 @@ k\ 即可\)</span></p>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> (k <span class="op">*</span> (n <span class="op">+</span> <span class="dv">1</span> <span class="op">-</span> leak) <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> (e <span class="op">-</span> k)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> <span class="bu">pow</span>(c, d, n)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(long_to_bytes(m))  <span class="co"># 解不唯一</span></span></code></pre></div>
+<p>更新：当 e 比较小时，<span class="math inline">\(k \approx \dfrac{e
+\cdot leak}{n}\)</span></p>
 <h3 id="leak_1-p-qe-n-leak_2-p-eq-n"><span class="math inline">\(leak_1
 = (p + q)^e\ \%\ n,\ leak_2 = (p + e)^q\ \%\ n\)</span></h3>
 <p>出自：2020 巅峰极客 tryrsa</p>
@@ -775,10 +777,10 @@ p)\)</span></h3>
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>RSA-leak</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">1.1k</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">1.2k</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-21, 11:06:27</p>
-    <p><span class="copy-title">最后更新:</span>2023-12-24, 13:13:05</p>
+    <p><span class="copy-title">最后更新:</span>2024-04-29, 16:34:44</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/21/RSA-leak/" title="RSA-leak">http://example.com/2023/11/21/RSA-leak/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
