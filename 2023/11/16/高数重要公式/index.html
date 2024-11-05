@@ -286,7 +286,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="16">
-<input type="hidden" id="yelog_site_word_count" value="13.4k">
+<input type="hidden" id="yelog_site_word_count" value="13.5k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -580,12 +580,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2024-11-02 09:58:39'>2023-11-16 13:53</time>
+            发布时间 : <time class="date" title='最后更新: 2024-11-05 08:32:43'>2023-11-16 13:53</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:941</span>
+        <span>字数:980</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -623,29 +623,28 @@
         <h2 id="等价无穷小">等价无穷小</h2>
 <p><strong>前提：<span class="math inline">\(x \rightarrow
 0\)</span></strong></p>
-<p><span class="math inline">\(\ln(1+x) \thicksim x \qquad x - \ln(1+x)
-\thicksim \dfrac{1}{2} x^2\)</span></p>
-<p><span class="math inline">\(e^x - 1 \thicksim x \qquad a^x - 1
-\thicksim x \ln{a}\)</span></p>
-<p>当 <span class="math inline">\(a \neq 0\)</span>，<span class="math inline">\((1 + x)^a - 1 \thicksim ax \qquad (1 + x)^n - 1
-\thicksim nx\)</span></p>
+<p><span class="math inline">\(\ln(1+x)\sim x \qquad x -
+\ln(1+x)\sim\dfrac{1}{2} x^2\)</span></p>
+<p><span class="math inline">\(e^x - 1\sim x \qquad a^x - 1\sim x
+\ln{a}\)</span></p>
+<p>当 <span class="math inline">\(a \neq 0\)</span>，<span class="math inline">\((1 + x)^a - 1\sim ax \qquad (1 + x)^n - 1\sim
+nx\)</span></p>
 <blockquote>
 <p>拓展：当 <span class="math inline">\(A(x) \rightarrow 0\)</span> 且
-<span class="math inline">\(A(x)B(x) \rightarrow 0\)</span>，<span class="math inline">\([1 + A(x)]^{B(x)} - 1 \thicksim
-A(x)B(x)\)</span></p>
+<span class="math inline">\(A(x)B(x) \rightarrow 0\)</span>，<span class="math inline">\([1 + A(x)]^{B(x)} - 1\sim A(x)B(x)\)</span></p>
 </blockquote>
 <hr>
-<p><span class="math inline">\(\sin{x} \thicksim \arcsin{x} \thicksim
-\tan{x} \thicksim \arctan{x} \thicksim x\)</span></p>
-<p><span class="math inline">\([x - \sin{x}] \thicksim [\arcsin{x} - x]
-\thicksim \dfrac{1}{6} x^3\)</span></p>
-<p><span class="math inline">\([\tan{x} - x] \thicksim [x - \arctan{x}]
-\thicksim \dfrac{1}{3} x^3\)</span></p>
-<p><span class="math inline">\(1 - \cos{x} \thicksim \dfrac{1}{2}
+<p><span class="math inline">\(\sin{x}\sim\arcsin{x}\sim\tan{x}\sim\arctan{x}\sim
+x\)</span></p>
+<p><span class="math inline">\([x - \sin{x}]\sim[\arcsin{x} -
+x]\sim\dfrac{1}{6} x^3\)</span></p>
+<p><span class="math inline">\([\tan{x} - x]\sim[x -
+\arctan{x}]\sim\dfrac{1}{3} x^3\)</span></p>
+<p><span class="math inline">\(1 - \cos{x}\sim\dfrac{1}{2}
 x^2\)</span></p>
 <blockquote>
-<p>拓展：<span class="math inline">\(1 - \cos^a{x} \thicksim
-\dfrac{a}{2} x^2\)</span></p>
+<p>拓展：<span class="math inline">\(1 - \cos^a{x}\sim\dfrac{a}{2}
+x^2\)</span></p>
 </blockquote>
 <h2 id="导数积分">导数+积分</h2>
 <h3 id="基本公式">基本公式</h3>
@@ -657,6 +656,8 @@ x^2\)</span></p>
 \qquad (a^x)^{\prime} = a^x \ln{a} \end{aligned}\)</span></p>
 <p><span class="math inline">\((\ln{|x|})^{\prime} = \dfrac{1}{x} \qquad
 (\log_{a}{x})^{\prime} = \dfrac{1}{x \ln{a}}\)</span></p>
+<p><span class="math inline">\(|x|^{\prime} =
+\dfrac{x}{|x|}\)</span></p>
 <hr>
 <p><span class="math inline">\((\sin{x})^{\prime} = \cos{x} \qquad
 (\cos{x})^{\prime} = -\sin{x}\)</span></p>
@@ -702,8 +703,9 @@ x^2}dx= \dfrac{1}{2a} \ln{\left| \dfrac{a + x}{a - x} \right|} + C
 \sqrt{x}}\)</span></p>
 <p><span class="math inline">\((\sin^2{x})^{\prime} =
 -(\cos^2{x})^{\prime} = \sin{2x}\)</span></p>
-<p><span class="math inline">\(|x|^{\prime} =
-\dfrac{x}{|x|}\)</span></p>
+<p><span class="math inline">\(\begin{aligned}\int_0^\frac{\pi}{2}\sin{x}dx=\int_0^\frac{\pi}{2}\cos{x}dx=1\end{aligned}\)</span></p>
+<p><span class="math inline">\(\begin{aligned}\int_0^{+\infty}xe^{-x}dx=1\end{aligned}\)</span></p>
+<p><span class="math inline">\(\begin{aligned}\int_0^1\ln{x}dx=-1\end{aligned}\)</span></p>
 <h2 id="泰勒麦克劳林展开式">泰勒+麦克劳林展开式</h2>
 <p>奇函数展开后只有奇数次幂（<span class="math inline">\(\sin{x}\)</span>，<span class="math inline">\(\tan{x}\)</span>，<span class="math inline">\(\arcsin{x}\)</span>，<span class="math inline">\(\arctan{x}\)</span>，<span class="math inline">\(\dfrac{e^x - e^{-x}}{2}\)</span>）</p>
 <p>偶函数展开后只有偶数次幂（<span class="math inline">\(\cos{x}\)</span>）</p>
@@ -765,10 +767,10 @@ e^{-x}}{2} = \sum\limits_{n=0}^{\infty} {\dfrac{x^{2n+1}}{(2n+1)!}}
 
 <div class="article_copyright">
     <p><span class="copy-title">文章标题:</span>高数重要公式</p>
-    <p><span class="copy-title">字数:</span><span class="post-count">941</span></p>
+    <p><span class="copy-title">字数:</span><span class="post-count">980</span></p>
     <p><span class="copy-title">本文作者:</span><a  title="skateXu">skateXu</a></p>
     <p><span class="copy-title">发布时间:</span>2023-11-16, 13:53:29</p>
-    <p><span class="copy-title">最后更新:</span>2024-11-02, 09:58:39</p>
+    <p><span class="copy-title">最后更新:</span>2024-11-05, 08:32:43</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2023/11/16/%E9%AB%98%E6%95%B0%E9%87%8D%E8%A6%81%E5%85%AC%E5%BC%8F/" title="高数重要公式">http://example.com/2023/11/16/%E9%AB%98%E6%95%B0%E9%87%8D%E8%A6%81%E5%85%AC%E5%BC%8F/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">&#34;署名-非商用-相同方式共享 4.0&#34;</a> 转载请保留原文链接及作者。
